@@ -1,26 +1,26 @@
 function init() {
-    const width = 960;
-    const height = 600;
+    var width = 960;
+    var height = 600;
 
     // Create an SVG element and append it to the body
-    const svg = d3.select("body").append("svg")
+    var svg = d3.select("body").append("svg")
         .attr("width", width)
         .attr("height", height);
 
     // Create a tooltip div
-    const tooltip = d3.select("#tooltip");
+    var tooltip = d3.select("#tooltip");
 
     // Create a projection for the map (Mercator projection centered on Europe)
-    const projection = d3.geoMercator()
+    var projection = d3.geoMercator()
         .center([13, 52])  // Center on Europe
-        .scale(800)
+        .scale(400)
         .translate([width / 2, height / 2]);
 
     // Create a path generator based on the projection
-    const path = d3.geoPath().projection(projection);
-
+    var path = d3.geoPath().projection(projection);
+    
     // Create a map for country name normalization if needed
-    const countryNameMap = {
+    var countryNameMap = {
         "United Kingdom": "UK",
         "Czech Republic": "Czechia",
         "Germany": "Germany",
@@ -31,7 +31,7 @@ function init() {
     // Load the CSV file with depression rates
     d3.csv("depression_rates.csv").then(function (data) {
         // Create a map for the depression rates
-        const depressionRateMap = new Map();
+        var depressionRateMap = new Map();
         data.forEach(function (d) {
             depressionRateMap.set(d.country, +d["depression rates"]);
         });
@@ -45,8 +45,8 @@ function init() {
                 .attr("class", "country")
                 .attr("d", path)
                 .on("mouseover", function (event, d) {
-                    const country = countryNameMap[d.properties.name] || d.properties.name;
-                    const rate = depressionRateMap.get(country) || "N/A";  // Get rate or show 'N/A'
+                    var country = countryNameMap[d.properties.name] || d.properties.name;
+                    var rate = depressionRateMap.get(country) || "N/A";  // Get rate or show 'N/A'
 
                     // Display the country name and depression rate in the tooltip
                     tooltip.style("opacity", 1)
