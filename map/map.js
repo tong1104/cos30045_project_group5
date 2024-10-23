@@ -37,7 +37,7 @@ function init() {
         });
 
         // Load the GeoJSON data (European Union countries)
-        d3.json("https://raw.githubusercontent.com/etemkeskin/data_analyse/refs/heads/master/europe_union/european-union-countries.json").then(function (geoData) {
+        d3.json("european-union-countries.json").then(function (geoData) {
             // Bind the GeoJSON data to the SVG and create one path per country
             svg.selectAll("path")
                 .data(geoData.features)
