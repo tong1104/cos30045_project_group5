@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="design4.css">
+    <title>Depression Among Different Social Groups in Europe</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+
+    <h1>Depression Rates in European Union Countries</h1>
+
+    <div>
+        <button id="year2020" onclick="updateChart('2020')">2020</button>
+        <button id="year2021" onclick="updateChart('2021')">2021</button>
+        <button id="year2022" onclick="updateChart('2022')">2022</button>
+    </div>
+    
+    <div>
+        <button onclick="setDataset('gender')">Gender</button>
+        <button onclick="setDataset('employment')">Employment</button>
+        <button onclick="setDataset('financial')">Financial</button>
+        <button onclick="setDataset('age')">Age</button>
+    </div>
+    
+
+
+    <div id="tooltip" class="tooltip"></div>
+    <script src="design4.js"></script>
+</body>
+</html>

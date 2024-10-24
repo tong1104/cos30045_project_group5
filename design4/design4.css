@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 60px;
+}
+.country {
+    stroke: #333;
+    stroke-width: 0.5px;
+}
+.tooltip {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 3px;
+    pointer-events: none;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    opacity: 0;
+}
