@@ -3,11 +3,9 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #ebffea;
     margin-bottom: 60px;
 }
 .country {
-    fill: lightblue;
     stroke: #333;
     stroke-width: 0.5px;
 }
