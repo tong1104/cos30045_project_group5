@@ -22,4 +22,49 @@ body {
 }
 .legend {
     font-size: 12px;
+    
+}
+.slider-container {
+    width: 80%; /* Adjust width as needed */
+    margin: auto; /* Center the container */
+    text-align: center; /* Center labels */
+}
+
+.slider-labels {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space between labels */
+    margin-bottom: 10px; /* Spacing below labels */
+}
+
+#year-slider {
+    -webkit-appearance: none; /* Override default browser styling */
+    appearance: none;
+    width: 100%; /* Full-width slider */
+    height: 8px; /* Height of the slider */
+    background: #ddd; /* Background color */
+    border-radius: 5px; /* Rounded corners */
+    outline: none; /* Remove outline */
+}
+
+#year-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default styling */
+    appearance: none;
+    width: 20px; /* Width of the thumb */
+    height: 20px; /* Height of the thumb */
+    background: #007BFF; /* Thumb color */
+    border-radius: 50%; /* Rounded thumb */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+#year-slider::-moz-range-thumb {
+    width: 20px; /* Width of the thumb */
+    height: 20px; /* Height of the thumb */
+    background: #007BFF; /* Thumb color */
+    border-radius: 50%; /* Rounded thumb */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+/* Active state */
+#year-slider:active {
+    background: #ccc; /* Darker background when active */
 }

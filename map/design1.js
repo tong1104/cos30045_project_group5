@@ -29,7 +29,7 @@ function init() {
 
     // Slider event listener
     d3.select("#year-slider").on("input", function() {
-        var selectedYear = +this.value; // Get the selected year from the slider
+        var selectedYear = +this.value; // Get the selected year directly from the slider
         d3.select("#year-label").text(selectedYear); // Update label
         loadMapData(selectedYear); // Load the corresponding CSV for the selected year
     });
@@ -131,4 +131,4 @@ function init() {
 }
 
 // Call the init function when the window loads
-window.onload = init;
+window.onload = init;  //this is my script
