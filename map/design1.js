@@ -131,4 +131,4 @@ function init() {
 }
 
 // Call the init function when the window loads
-window.onload = init;  //this is my script
+window.onload = init;
