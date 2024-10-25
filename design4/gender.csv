@@ -1,7 +1,4 @@
-Year,Employment Status,Risk Percentage
-2020,Unemployed,67
-2020,Employed,49
-2021,Unemployed,76
-2021,Employed,55
-2022,Unemployed,69
-2022,Employed,52
+Year,Men,Women
+2020,47,54
+2021,53,60
+2022,50,59
