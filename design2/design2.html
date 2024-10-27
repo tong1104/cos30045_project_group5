@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stacked Bar Charts for Factors of Depression</title>
+    <link rel="stylesheet" href="design2.css">
+</head>
+<body>
+    <h1>Factors of Depression in European Countries</h1>
+    
+    <div class="button-container">
+        <button onclick="showChart('education')">Education Levels</button>
+        <button onclick="showChart('income')">Income Levels</button>
+        <button onclick="showChart('disability')">Disability Levels</button>
+    </div>
+
+    <div id="chartContainer">
+        <div id="educationChart" class="chart"></div>
+        <div id="incomeChart" class="chart"></div>
+        <div id="disabilityChart" class="chart"></div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="design2.js"></script>
+</body>
+</html>
