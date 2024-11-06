@@ -5,10 +5,71 @@ body {
     padding: 0;
     margin-bottom: 60px;
 }
+
+.layout-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+}
+
+.content {
+    flex: 1;
+    max-width: 35%;
+  }
+  
+.content h2 {
+    color: #413e66;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+  }
+  
+.content h3 {
+    color: #696592;
+    font-weight: 400;
+    font-size: 22px;
+    font-style: italic;
+  }
+  
+.content ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+.content ul li {
+    padding-bottom: 10px;
+  }
+  
+.content ul li i {
+    font-size: 20px;
+    padding-right: 4px;
+    color: #1bb1dc;
+  }
+  
+
+.info-container {
+    flex: 1;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+}
+
+.map-container {
+    flex: 2;
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0; /* No gap between slider and map */
+    padding: 0;
+    margin: 0;
+}
+
 .country {
     stroke: #333;
     stroke-width: 0.5px;
 }
+
 .tooltip {
     position: absolute;
     background-color: white;
@@ -20,51 +81,78 @@ body {
     font-size: 12px;
     opacity: 0;
 }
-.legend {
-    font-size: 12px;
-    
-}
+
 .slider-container {
-    width: 80%; /* Adjust width as needed */
-    margin: auto; /* Center the container */
-    text-align: center; /* Center labels */
+    width: 100%;
+    margin-bottom: 0; /* Remove bottom margin to bring it closer to the map */
+    padding: 0; /* Remove extra padding */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 
 .slider-labels {
-    display: flex; /* Use flexbox for alignment */
-    justify-content: space-between; /* Space between labels */
-    margin-bottom: 10px; /* Spacing below labels */
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
-#year-slider {
-    -webkit-appearance: none; /* Override default browser styling */
+.slider-container {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: #413e66;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  #year-slider {
+    -webkit-appearance: none;
     appearance: none;
-    width: 100%; /* Full-width slider */
-    height: 8px; /* Height of the slider */
-    background: #ddd; /* Background color */
-    border-radius: 5px; /* Rounded corners */
-    outline: none; /* Remove outline */
-}
-
-#year-slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default styling */
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+  }
+  
+  #year-slider:hover {
+    opacity: 1;
+  }
+  
+  #year-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
     appearance: none;
-    width: 20px; /* Width of the thumb */
-    height: 20px; /* Height of the thumb */
-    background: #007BFF; /* Thumb color */
-    border-radius: 50%; /* Rounded thumb */
-    cursor: pointer; /* Change cursor on hover */
-}
+    width: 20px;
+    height: 20px;
+    background-color: #1bb1dc;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    transition: background-color 0.3s;
+  }
+  
+  #year-slider::-webkit-slider-thumb:hover {
+    background-color: #0a98c0;
+  }
 
-#year-slider::-moz-range-thumb {
-    width: 20px; /* Width of the thumb */
-    height: 20px; /* Height of the thumb */
-    background: #007BFF; /* Thumb color */
-    border-radius: 50%; /* Rounded thumb */
-    cursor: pointer; /* Change cursor on hover */
-}
-
-/* Active state */
-#year-slider:active {
-    background: #ccc; /* Darker background when active */
+  #map svg {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    margin-top: -10px; /* Adjust to bring closer to the slider */
 }

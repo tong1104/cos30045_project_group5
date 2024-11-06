@@ -1,6 +1,6 @@
 function init() {
-    var width = 960;
-    var height = 600;
+    var width = 800;
+    var height = 540;
 
     // Create an SVG element and append it to the body
     var svg = d3.select("body").append("svg")
