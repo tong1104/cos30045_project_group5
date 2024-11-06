@@ -1,0 +1,86 @@
+indec.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Website</title>
+
+    <!-- Main Stylesheets -->
+    <link href="style.css" rel="stylesheet">
+    <!-- <link href="bootstrap.min.css" rel="stylesheet"> -->
+    <link href="bootstrap.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- D3.js Library -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+    <header id="header">
+        <div id="container">
+            <nav class="main-nav float-right d-none d-lg-block">
+                <ul>
+                    <li class="active"><a href="#intro">Home</a></li>
+                    <li><a href="#design1">Design 1</a></li>
+                    <li><a href="#design2">Design 2</a></li>
+                    <li><a href="#portfolio">Design 3</a></li>
+                    <li><a href="#team">Design 4</a></li>
+                    <li><a href="#contact">Design 5</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="intro" class="clearfix">
+        <div class="container d-flex h-100">
+            <div class="row justify-content-center align-self-center">
+                <div class="col-md-6 intro-info order-md-first order-last">
+                    <h2>Rapid Solutions<br>for Your <span>Business!</span></h2>
+                    <div>
+                        <a href="#about" class="btn-get-started scrollto">Get Started</a>
+                    </div>
+                </div>
+                <div class="col-md-6 intro-img order-md-last order-first">
+                    <img src="image/intro-bg.jpg" alt="" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design 1 Section with Integrated Content -->
+    <section id="design1">
+        <div class="container">
+            <div class="row">
+                <!-- Left side: Text content -->
+                <div class="col-lg-6 col-md-6">
+                    <div class="design1-content">
+                        <h2>About Us</h2>
+                        <h3>Understanding Depression Rates in the EU</h3>
+                        <p>This map illustrates the depression rates across different countries in the European Union. You can view the data over multiple years to understand trends and patterns.</p>
+                        <ul>
+                            <li><i class="ion-android-checkmark-circle"></i> View depression rates across EU countries from 2015 to 2021.</li>
+                            <li><i class="ion-android-checkmark-circle"></i> Use the slider to explore data by year.</li>
+                            <li><i class="ion-android-checkmark-circle"></i> Hover over a country to see the specific rate for that year.</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Right side: Map Graph -->
+                <div class="col-lg-6 col-md-6 design1-map">
+                    <div class="slider-container">
+                        <div class="slider-labels">
+                            <span>2015</span><span>2016</span><span>2017</span><span>2018</span><span>2019</span><span>2020</span><span>2021</span>
+                        </div>
+                        <input type="range" id="year-slider" min="2015" max="2021" value="2021" step="1" />
+                    </div>
+                    <div id="map-container"></div> <!-- Container for the SVG map -->
+                    <div id="tooltip" class="tooltip"></div>
+                    <script src="../design1/design1.js"></script>  <!-- Correct Path -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
