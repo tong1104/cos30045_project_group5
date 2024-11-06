@@ -4,29 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="design4.css">
-    <title>Depression Among Different Social Groups in Europe</title>
+    <title>How do people deal with anxiety or depression in EU countries? 2020</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
 
-    <h1>Depression Among Different Social Groups in Europ</h1>
+    <h1>How do people deal with anxiety or depression in EU countries? 2020</h1>
 
-    <div>
-        <button id="year2020" onclick="updateChart('2020')">2020</button>
-        <button id="year2021" onclick="updateChart('2021')">2021</button>
-        <button id="year2022" onclick="updateChart('2022')">2022</button>
-    </div>
-    
-    <div>
-        <button onclick="setDataset('gender')">Gender</button>
-        <button onclick="setDataset('employment')">Employment</button>
-        <button onclick="setDataset('financial')">Financial</button>
-        <button onclick="setDataset('age')">Age</button>
-    </div>
-    
+    <label for="country-select">Select Country:</label>
+    <select id="country-select">
+    <option value="all">All Countries</option>
+    </select>
 
+    <!-- Radar chart container -->
+    <div id="radarChart"></div>
 
+    <!-- Tooltip for displaying data on hover -->
     <div id="tooltip" class="tooltip"></div>
+
     <script src="design4.js"></script>
 </body>
 </html>

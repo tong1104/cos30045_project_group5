@@ -1,165 +1,220 @@
-// Set dimensions and margins for the SVG
-const margin = {top: 20, right: 30, bottom: 40, left: 40},
-      width = 400 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+// Load data from the CSV file
+d3.csv("Design4.csv").then(data => {
+    // Convert data into the format needed for the radar chart
+    const countriesData = data.map(d => ({
+        country: d.Entity,
+        categories: {
+            "Spiritual Activities": +d["Share - Question: mh8b - Engaged in religious/spiritual activities when anxious/depressed - Answer: Yes - Gender: all - Age group: all"],
+            "Healthy Lifestyle": +d["Share - Question: mh8e - Improved healthy lifestyle behaviors when anxious/depressed - Answer: Yes - Gender: all - Age group: all"],
+            "Work Changes": +d["Share - Question: mh8f - Made a change to work situation when anxious/depressed - Answer: Yes - Gender: all - Age group: all"],
+            "Family/Friends": +d["Share - Question: mh8c - Talked to friends or family when anxious/depressed - Answer: Yes - Gender: all - Age group: all"],
+            "Medication": +d["Share - Question: mh8d - Took prescribed medication when anxious/depressed - Answer: Yes - Gender: all - Age group: all"]
+        }
+    }));
 
-// Create an SVG container
-const svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    // Define a color map for each country
+    const countryColorMap = {
+        "Austria": "#1f77b4",
+        "Belgium": "#ff7f0e",
+        "Bulgaria": "#2ca02c",
+        "Croatia": "#d62728",
+        "Cyprus": "#9467bd",
+        "Czechia": "#8c564b",
+        "Denmark": "#e377c2",
+        "Estonia": "#7f7f7f",
+        "Finland": "#bcbd22",
+        "France": "#17becf",
+        "Germany": "#1f77b4",
+        "Greece": "#ff7f0e",
+        "Hungary": "#2ca02c",
+        "Ireland": "#d62728",
+        "Italy": "#9467bd",
+        "Latvia": "#8c564b",
+        "Lithuania": "#e377c2",
+        "Luxembourg": "#7f7f7f",
+        "Malta": "#bcbd22",
+        "Netherlands": "#17becf",
+        "Poland": "#1f77b4",
+        "Portugal": "#ff7f0e",
+        "Romania": "#2ca02c",
+        "Slovakia": "#d62728",
+        "Slovenia": "#9467bd",
+        "Spain": "#8c564b",
+        "Sweden": "#e377c2"
+    };
 
-let data; // Declare a variable to store data
-let currentDataset = 'employment'; // Default dataset to display
 
-// Function to load the appropriate data based on the current dataset
-function loadData(dataset) {
-    return d3.csv(`${dataset}.csv`).then(loadedData => {
-        data = loadedData; // Store the loaded data
-        updateChart('2020'); // Show the chart for 2020 by default
+    // Configuration settings for the radar chart
+    const width = 600, height = 600;
+    const radius = Math.min(width, height) / 2;
+    const levels = 5; // Number of concentric circles
+    const categories = Object.keys(countriesData[0].categories);
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+    // Create the SVG element for the radar chart
+    const svg = d3.select("#radarChart")
+        .append("svg")
+        .attr("width", width + 200)  // Extra space for country labels
+        .attr("height", height + 100)
+        .append("g")
+        .attr("transform", `translate(${width / 2 + 50}, ${height / 2 + 50})`);
+
+    // Calculate the angle of each axis
+    const angleSlice = (2 * Math.PI) / categories.length;
+
+        // Create the background circles (levels)
+        for (let level = 0; level < levels; level++) {
+            const levelFactor = radius * ((level + 1) / levels);
+            svg.selectAll(".level")
+                .data(categories)
+                .enter()
+                .append("line")
+                .attr("x1", (d, i) => levelFactor * Math.cos(angleSlice * i - Math.PI / 2))
+                .attr("y1", (d, i) => levelFactor * Math.sin(angleSlice * i - Math.PI / 2))
+                .attr("x2", (d, i) => levelFactor * Math.cos(angleSlice * (i + 1) - Math.PI / 2))
+                .attr("y2", (d, i) => levelFactor * Math.sin(angleSlice * (i + 1) - Math.PI / 2))
+                .attr("stroke", "gray")
+                .attr("stroke-width", 0.5);
+        }
+
+    // Create the tooltip
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    // Function to map data points to coordinates, with sharp edges
+    const line = d3.lineRadial()
+        .radius(d => d.value * radius / 100)
+        .angle((d, i) => i * angleSlice)
+        .curve(d3.curveLinearClosed);  // Use this for sharp, straight lines
+
+    // Draw the radar chart for each country
+    countriesData.forEach((datum, index) => {
+        const dataPoints = categories.map((category, i) => ({ axis: category, value: datum.categories[category] }));
+        svg.append("path")
+            .datum(dataPoints)
+            .attr("d", line)
+            .attr("fill", countryColorMap[datum.country] || d3.schemeCategory10[index % 10])
+            .attr("fill-opacity", 0.1)
+            .attr("stroke",countryColorMap[datum.country] || d3.schemeCategory10[index % 10])
+            .attr("stroke-width", 2)
+            .on("mouseover", function() {
+                tooltip.style("opacity", 1);
+            })
+            .on("mousemove", function(event) {
+                const [x, y] = d3.pointer(event);
+                const categoryIndex = Math.floor((Math.atan2(y, x) + Math.PI) / angleSlice);
+                const categoryName = categories[categoryIndex];
+                const percentage = datum.categories[categoryName];
+
+                tooltip.html(
+                    `<strong>Country:</strong> ${datum.country}<br>
+                    <strong>Category:</strong> ${categoryName}<br>
+                    <strong>Percentage:</strong> ${percentage}%`
+                )
+                .style("left", (event.pageX + 15) + "px")
+                .style("top", (event.pageY - 15) + "px");
+            })
+            .on("mouseout", function() {
+                tooltip.style("opacity", 0);
+            });
     });
-}
 
-// Load initial data for the default dataset
-loadData(currentDataset);
-
-// Determine the fixed maximum value for y-axis
-const fixedMaxY = 80; // Set this to the maximum expected value
-
-// Function to update the chart based on the selected year
-function updateChart(selectedYear) {
-    // Filter data for the selected year
-    const filteredData = data.filter(d => d.Year === selectedYear);
-
-    // Clear previous bars and text
-    svg.selectAll("*").remove(); // Remove existing bars and axes
-
-    // Determine the x-axis and y-axis based on the current dataset
-    let x, y;
-
-    // Check dataset type and define axes accordingly
-    if (currentDataset === 'employment') {
-        x = d3.scaleBand()
-            .domain(filteredData.map(d => d["Employment Status"]))
-            .range([0, width])
-            .padding(0.1);
-    } else if (currentDataset === 'gender') {
-        x = d3.scaleBand()
-            .domain(["Men", "Women"]) // Fixed domains for gender
-            .range([0, width])
-            .padding(0.1);
-    } else if (currentDataset === 'financial') {
-        x = d3.scaleBand()
-            .domain(["Financial Difficulties", "No Financial Difficulties"]) // Fixed domains for financial
-            .range([0, width])
-            .padding(0.1);
-    } else if (currentDataset === 'age') {
-        x = d3.scaleBand()
-            .domain(filteredData.map(d => d["Age Group"])) // Dynamic for age
-            .range([0, width])
-            .padding(0.1);
-    }
-
-    y = d3.scaleLinear()
-        .domain([0, fixedMaxY]) // Use fixed maximum for y-axis
-        .range([height, 0]);
-
-    // Add the x-axis
-    svg.append("g")
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x));
-
-    // Add the y-axis
-    svg.append("g")
-        .call(d3.axisLeft(y));
-
-    // Create the bars based on the current dataset
-    if (currentDataset === 'gender') {
-        // Create bars for gender data
-        const menData = filteredData.map(d => ({ "Status": "Men", "Value": d["Men"] }));
-        const womenData = filteredData.map(d => ({ "Status": "Women", "Value": d["Women"] }));
-
-        const allGenderData = menData.concat(womenData);
-
-        svg.selectAll("bars")
-            .data(allGenderData)
-            .enter()
-            .append("rect")
-            .attr("x", d => x(d.Status))
-            .attr("y", d => y(+d.Value))
-            .attr("height", d => height - y(+d.Value))
-            .attr("width", x.bandwidth())
-            .attr("fill", (d, i) => i % 2 === 0 ? "#007bff" : "#ff6347"); // Alternate colors for Men and Women
-    } else if (currentDataset === 'financial') {
-        svg.selectAll("bars")
-            .data(filteredData)
-            .enter()
-            .append("rect")
-            .attr("x", d => x("Financial Difficulties")) // Fixed for financial difficulties
-            .attr("y", d => y(+d["Financial Difficulties"]))
-            .attr("height", d => height - y(+d["Financial Difficulties"]))
-            .attr("width", x.bandwidth() / 2)
-            .attr("fill", "#007bff"); // Set color for financial difficulties
-
-        svg.selectAll("bars")
-            .data(filteredData)
-            .enter()
-            .append("rect")
-            .attr("x", d => x("No Financial Difficulties") + x.bandwidth() / 2) // Fixed for no financial difficulties
-            .attr("y", d => y(+d["No Financial Difficulties"]))
-            .attr("height", d => height - y(+d["No Financial Difficulties"]))
-            .attr("width", x.bandwidth() / 2)
-            .attr("fill", "#ff6347"); // Set color for no financial difficulties
-    } else if (currentDataset === 'age') {
-        svg.selectAll("bars")
-            .data(filteredData)
-            .enter()
-            .append("rect")
-            .attr("x", d => x(d["Age Group"]))
-            .attr("y", d => y(+d["Risk Percentage"]))
-            .attr("height", d => height - y(+d["Risk Percentage"]))
-            .attr("width", x.bandwidth())
-            .attr("fill", "#007bff"); // Set color for age
-
-    } else {
-        svg.selectAll("bars")
-            .data(filteredData)
-            .enter()
-            .append("rect")
-            .attr("x", d => x(d["Employment Status"]))
-            .attr("y", d => y(+d["Risk Percentage"]))
-            .attr("height", d => height - y(+d["Risk Percentage"]))
-            .attr("width", x.bandwidth())
-            .attr("fill", "#007bff"); // Set color for employment
-    }
-
-    // Add text labels on top of the bars
-    svg.selectAll("text")
-        .data(filteredData)
+    // Create the category labels at the outer edge
+    svg.selectAll(".axisLabel")
+        .data(categories)
         .enter()
         .append("text")
-        .attr("x", d => {
-            if (currentDataset === 'gender') return x("Men") + x.bandwidth() / 2;
-            if (currentDataset === 'financial') return x("Financial Difficulties") + x.bandwidth() / 2; // Fixed for financial
-            return x(d["Employment Status"]) + x.bandwidth() / 2; // Employment or age
-        })
-        .attr("y", d => {
-            const riskValue = currentDataset === 'gender' ? +d["Men"] : +d["Risk Percentage"] || +d["Financial Difficulties"];
-            return riskValue > 0 ? y(riskValue) - 5 : height; // Adjust position above the bar
-        }) // Position above the bar
-        .attr("text-anchor", "middle") // Center the text
-        .text(d => {
-            if (currentDataset === 'gender') return d["Men"] + ' / ' + d["Women"]; // Show both
-            if (currentDataset === 'financial') return d["Financial Difficulties"] + ' / ' + d["No Financial Difficulties"]; // Show both
-            return d["Risk Percentage"]; // Employment or age
-        })
-        .attr("fill", "black") // Set text color
-        .style("font-size", "12px"); // Optional: Set font size
+        .attr("x", (d, i) => (radius + 20) * Math.cos(angleSlice * (i - 1) - Math.PI / 2)) // Offset by +1
+        .attr("y", (d, i) => (radius + 20) * Math.sin(angleSlice * (i - 1) - Math.PI / 2)) // Offset by +1
+        .attr("dy", "0.35em")
+        .style("font-size", "12px")
+        .style("text-anchor", "middle")
+        .text(d => d);
+
+    // Add country names as labels on the right side
+    const legend = svg.append("g")
+        .attr("transform", `translate(${radius + 60}, ${-radius})`);
+
+    legend.selectAll(".countryLabel")
+        .data(countriesData)
+        .enter()
+        .append("text")
+        .attr("x", 10) // position each label 10px to the right of the legend container
+        .attr("y", (d, i) => i * 15)  // space labels vertically
+        .style("font-size", "10px")
+        .style("fill", d => colorScale(countriesData.indexOf(d)))
+        .text(d => d.country);
+
+    // Populate the dropdown menu with countries
+const select = d3.select("#country-select");
+countriesData.forEach(d => {
+    select.append("option")
+        .attr("value", d.country)
+        .text(d.country);
+});
+
+// Function to update radar chart based on selected country
+function updateRadarChart(selectedCountry) {
+    // Clear existing paths and country labels
+    svg.selectAll("path").remove();
+    svg.selectAll(".countryLabel").remove();
+
+    const dataToDisplay = selectedCountry === "all" ? countriesData : countriesData.filter(d => d.country === selectedCountry);
+
+    // Redraw the radar chart for the selected country
+    dataToDisplay.forEach((datum) => {
+        const dataPoints = categories.map((category, i) => ({ axis: category, value: datum.categories[category] }));
+        svg.append("path")
+            .datum(dataPoints)
+            .attr("d", line)
+            .attr("fill", countryColorMap[datum.country] || "gray") // Use color from countryColorMap for fill
+            .attr("fill-opacity", 0.1)
+            .attr("stroke", countryColorMap[datum.country] || "gray") // Use color from countryColorMap for stroke
+            .attr("stroke-width", 2)
+            .on("mouseover", function() {
+                tooltip.style("opacity", 1);
+            })
+            .on("mousemove", function(event) {
+                const [x, y] = d3.pointer(event);
+                const categoryIndex = Math.floor((Math.atan2(y, x) + Math.PI) / angleSlice);
+                const categoryName = categories[categoryIndex];
+                const percentage = datum.categories[categoryName];
+
+                tooltip.html(
+                    `<strong>Country:</strong> ${datum.country}<br>
+                    <strong>Category:</strong> ${categoryName}<br>
+                    <strong>Percentage:</strong> ${percentage}%`
+                )
+                .style("left", (event.pageX + 15) + "px")
+                .style("top", (event.pageY - 15) + "px");
+            })
+            .on("mouseout", function() {
+                tooltip.style("opacity", 0);
+            });
+    });
+
+    // Add country labels if displaying all countries
+    if (selectedCountry === "all") {
+        legend.selectAll(".countryLabel")
+            .data(countriesData)
+            .enter()
+            .append("text")
+            .attr("x", 10)
+            .attr("y", (d, i) => i * 15)  // Adjust position based on index
+            .style("font-size", "10px")
+            .style("fill", d => countryColorMap[d.country] || colorScale(countriesData.indexOf(d)))
+            .text(d => d.country);
+    }
 }
 
-// Function to set the current dataset based on button click
-function setDataset(dataset) {
-    currentDataset = dataset; // Update the current dataset
-    loadData(currentDataset); // Load the appropriate dataset and update the chart
-}
+// Initialize the chart with all countries
+updateRadarChart("all");
+
+// Update the chart when a new country is selected
+select.on("change", function() {
+    const selectedCountry = d3.select(this).property("value");
+    updateRadarChart(selectedCountry);
+});
+
+});
