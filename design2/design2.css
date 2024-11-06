@@ -40,3 +40,6 @@ h1 {
     pointer-events: none;
     opacity: 0;
 }
+#chartContainer {
+    padding: 20px;
+}
