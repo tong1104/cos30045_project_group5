@@ -5,10 +5,22 @@ body {
     padding: 0;
     margin-bottom: 60px;
 }
+
+/* Radar chart styling */
+#radarChart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Country paths in the radar chart */
 .country {
     stroke: #333;
     stroke-width: 0.5px;
 }
+
+/* Tooltip styling */
 .tooltip {
     position: absolute;
     background-color: white;
@@ -19,4 +31,16 @@ body {
     font-family: Arial, sans-serif;
     font-size: 12px;
     opacity: 0;
+    transition: opacity 0.2s;
+}
+
+/* Tooltip text styling */
+.tooltip h4 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.tooltip p {
+    margin: 0;
 }
