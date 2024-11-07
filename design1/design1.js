@@ -3,9 +3,10 @@ function init() {
     var height = 540;
 
     // Create an SVG element and append it to the body
-    var svg = d3.select("body").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+    var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .style("margin-top", "0px");
 
     // Create a tooltip div
     var tooltip = d3.select("#tooltip");
