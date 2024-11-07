@@ -60,7 +60,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0; /* No gap between slider and map */
     padding: 0;
     margin: 0;
 }
@@ -83,12 +82,13 @@ body {
 }
 
 .slider-container {
-    width: 100%;
-    margin-bottom: 0; /* Remove bottom margin to bring it closer to the map */
-    padding: 0; /* Remove extra padding */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  margin-bottom: 0; /* Remove bottom margin to bring it closer to the map */
+  padding: 0; /* Remove any extra padding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
 }
 
 
@@ -151,8 +151,14 @@ body {
   }
 
   #map svg {
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: auto;
     max-height: 450px;
-    margin-top: -10px; /* Adjust to bring closer to the slider */
+}
+
+.legend {
+  display: block;
+  visibility: visible;
 }
