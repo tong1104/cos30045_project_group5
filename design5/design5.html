@@ -5,72 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Depression Impact Visualization</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding-left: 40px;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            margin-top: 20px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .chart-container {
-            width: 100%;
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 10px;
-            margin-left: 10px;
-        }
-        .button-container {
-            text-align: center;
-            margin-top: 10px;
-        }
-        .dropdown {
-            padding: 8px 12px;
-            font-size: 14px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-top: 20px;
-        }
-        .tooltip {
-            position: absolute;
-            background-color: #ffffff;
-            border: 1px solid #ccc;
-            padding: 5px;
-            border-radius: 3px;
-            pointer-events: none;
-            font-size: 12px;
-        }
-        .hover-point {
-            fill: black;
-            stroke: none;
-            opacity: 0;
-        }
-    </style>
 </head>
 <body>
 
-<h1>The Impact Trends of Depression on European Society</h1>
+    <h1>The Impact Trends of Depression on European Society</h1>
 
-<div class="chart-container">
-    <svg id="chart" width="800" height="500"></svg>
-</div>
-
-<div class="button-container">
-    <select class="dropdown" id="rateDropdown">
-        <option value="Anxiety_Rate">Anxiety Rate</option>
-        <option value="Disease_Rate">Disease Rate</option>
-        <option value="Suicide_Rate">Suicide Rate</option>
-    </select>
-</div>
-
-<div class="tooltip" style="display: none;"></div>
-<script src="design5.js"></script>
-
-</body>
-</html>
+    <div class="chart-container">
+        <svg id="chart" width="800" height="500"></svg>
+    </div>
+    
+    <div class="tooltip" style="display: none;"></div>
+    <script src="design5.js"></script>
+    
+    </body>
+    </html>
