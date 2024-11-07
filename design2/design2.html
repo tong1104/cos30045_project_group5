@@ -10,15 +10,26 @@
     <h1>Factors of Depression in European Countries</h1>
     
     <div class="button-container">
-        <button onclick="showChart('education')">Education Levels</button>
+        <button onclick="showChart('education')" class="active">Education Levels</button>
         <button onclick="showChart('income')">Income Levels</button>
         <button onclick="showChart('disability')">Disability Levels</button>
     </div>
 
-    <div id="chartContainer">
-        <div id="educationChart" class="chart"></div>
-        <div id="incomeChart" class="chart"></div>
-        <div id="disabilityChart" class="chart"></div>
+    <div class="content-container">
+        <div class="description" id="description">
+            <!-- Placeholder for descriptions -->
+            <p id="educationDesc" class="desc">Education Level Description: This chart shows the distribution of depression factors based on education levels.</p>
+            <p id="incomeDesc" class="desc" style="display:none;">Income Level Description: This chart displays how income levels relate to depression factors.</p>
+            <p id="disabilityDesc" class="desc" style="display:none;">Disability Level Description: This chart illustrates the correlation between disability levels and depression factors.</p>
+        </div>
+
+        <div class="chart-container">
+            <div id="chartContainer">
+                <div id="educationChart" class="chart"></div>
+                <div id="incomeChart" class="chart"></div>
+                <div id="disabilityChart" class="chart"></div>
+            </div>
+        </div>
     </div>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>

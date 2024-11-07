@@ -1,4 +1,4 @@
-const width = 800;
+const width = 700;
 const height = 400;
 const margin = { top: 40, right: 40, bottom: 80, left: 60 };
 
@@ -121,6 +121,22 @@ function createChart(data, chartId, categories, title) {
 }
 
 function showChart(chart) {
+    // Hide all charts and descriptions
     document.querySelectorAll('.chart').forEach(div => div.style.display = 'none');
+    document.querySelectorAll('.desc').forEach(desc => desc.style.display = 'none');
+    
+    // Show the selected chart and description
     document.getElementById(`${chart}Chart`).style.display = 'block';
+    document.getElementById(`${chart}Desc`).style.display = 'block';
+    
+    // Remove the 'active' class from all buttons
+    document.querySelectorAll('.button-container button').forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    // Add the 'active' class to the clicked button
+    const activeButton = document.querySelector(`button[onclick="showChart('${chart}')"]`);
+    if (activeButton) {
+        activeButton.classList.add('active');
+    }
 }

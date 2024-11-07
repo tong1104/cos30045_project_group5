@@ -6,15 +6,62 @@ h1 {
     text-align: center;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #555;
+    font-weight: bold;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
+}
+
+button:hover {
+    color: #007BFF; /* Hover color */
+    border-bottom: 2px solid #007BFF; /* Underline on hover */
+}
+
+button.active {
+    color: #007BFF; /* Active color */
+    border-bottom: 2px solid #007BFF; /* Underline for the active button */
+}
+
+.content-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.description {
+    width: 45%; /* Adjusted to 70% for the description area */
+    padding: 20px;
+    text-align: left;
+    /* Removed the border-right to eliminate the vertical line */
+}
+
+.chart-container {
+    width: 65%; /* Adjusted to 30% for the chart and legend area */
+    padding: 20px;
+    text-align: center;
+}
+
 .chart {
-    display: block;
-    margin: auto;
+    display: none;
 }
 
 .legend {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    margin-top: 20px;
 }
 
 .legend-item {
@@ -39,7 +86,4 @@ h1 {
     border-radius: 8px;
     pointer-events: none;
     opacity: 0;
-}
-#chartContainer {
-    padding: 20px;
 }
