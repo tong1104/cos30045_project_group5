@@ -9,17 +9,25 @@
 </head>
 <body>
 
-    <h1>How do people deal with anxiety or depression in EU countries? 2020</h1>
+    <div class="content-container">
+        <h1>How do people deal with anxiety or depression in EU countries? 2020</h1>
 
-    <label for="country-select">Select Country:</label>
-    <select id="country-select">
-    <option value="all">All Countries</option>
-    </select>
+        <label for="country-select">Select Country:</label>
+        <select id="country-select">
+            <option value="all">All Countries</option>
+        </select>
 
-    <!-- Radar chart container -->
-    <div id="radarChart"></div>
+        <label for="category-select">Select Category:</label>
+        <select id="category-select">
+            <option value="all">All Categories</option>
+        </select>
 
-    <!-- Tooltip for displaying data on hover -->
+        <!-- Legend container below the dropdowns -->
+        <div class="legend-container" id="legend"></div>
+
+        <div id="radarChart"></div>
+    </div>
+
     <div id="tooltip" class="tooltip"></div>
 
     <script src="design4.js"></script>

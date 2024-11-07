@@ -1,6 +1,5 @@
-// Load data from the CSV file
+// design4.js
 d3.csv("Design4.csv").then(data => {
-    // Convert data into the format needed for the circular packing chart
     const countriesData = data.map(d => ({
         country: d.Entity,
         categories: [
@@ -15,35 +14,15 @@ d3.csv("Design4.csv").then(data => {
         ]
     }));
 
-    // Updated Country-Color mapping
     const countryColorMap = {
-        "Austria": "#A4C400", // Lime
-        "Belgium": "#60A917", // Green
-        "Bulgaria": "#008A00", // Emerald
-        "Croatia": "#00ABA9", // Teal
-        "Cyprus": "#1BA1E2", // Cyan
-        "Czechia": "#0050EF", // Cobalt
-        "Denmark": "#6A00FF", // Indigo
-        "Estonia": "#AA00FF", // Violet
-        "Finland": "#F472D0", // Pink
-        "France": "#D80073", // Magenta
-        "Germany": "#A20025", // Crimson
-        "Greece": "#E51400", // Red
-        "Hungary": "#FA6800", // Orange
-        "Ireland": "#F0A30A", // Amber
-        "Italy": "#E3C800", // Yellow
-        "Latvia": "#825A2C", // Brown
-        "Malta": "#6D8764", // Olive
-        "Netherlands": "#647687", // Steel
-        "Poland": "#76608A", // Mauve
-        "Portugal": "#87794E", // Taupe
-        "Romania": "#FF5733", // New color - Orange-Red
-        "Slovakia": "#33FF57", // New color - Green-Blue
-        "Spain": "#3357FF", // New color - Blue
-        "Sweden": "#FF33A1"  // New color - Pink-Purple
+        "Austria": "#A4C400", "Belgium": "#60A917", "Bulgaria": "#008A00", "Croatia": "#00ABA9",
+        "Cyprus": "#1BA1E2", "Czechia": "#0050EF", "Denmark": "#6A00FF", "Estonia": "#AA00FF",
+        "Finland": "#F472D0", "France": "#D80073", "Germany": "#A20025", "Greece": "#E51400",
+        "Hungary": "#FA6800", "Ireland": "#F0A30A", "Italy": "#E3C800", "Latvia": "#825A2C",
+        "Malta": "#6D8764", "Netherlands": "#647687", "Poland": "#76608A", "Portugal": "#87794E",
+        "Romania": "#FF5733", "Slovakia": "#33FF57", "Spain": "#3357FF", "Sweden": "#FF33A1"
     };
 
-    // Flatten the data structure to combine countries and categories
     const flatData = countriesData.flatMap(country => 
         country.categories.map(category => ({
             country: country.country,
@@ -52,31 +31,23 @@ d3.csv("Design4.csv").then(data => {
         }))
     );
 
-    // Define dimensions for the chart
-    const width = 1700, height = 1200;
+    const width = 800, height = 600;
 
-    // Create an SVG element
     const svg = d3.select("#radarChart")
         .append("svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${width / 2},${height / 2})`);
 
-    // Create a size scale for the circles
     const size = d3.scaleSqrt()
         .domain([0, d3.max(flatData, d => d.value)])
-        .range([5, 40]); // Adjust the range as needed for circle sizes
+        .range([3, 20]);
 
-    // Tooltip setup
     const tooltip = d3.select("body").append("div")
         .style("opacity", 0)
-        .attr("class", "tooltip")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "2px")
-        .style("border-radius", "5px")
-        .style("padding", "5px");
+        .attr("class", "tooltip");
 
-    // Tooltip mouse events
     const mouseover = function(event, d) {
         tooltip.style("opacity", 1);
     };
@@ -89,88 +60,86 @@ d3.csv("Design4.csv").then(data => {
         tooltip.style("opacity", 0);
     };
 
-    // Force simulation
-    const simulation = d3.forceSimulation(flatData)
-        .force("center", d3.forceCenter(width / 2, height / 2))
+    function updateChart(selectedCountry, selectedCategory) {
+        let filteredData = flatData;
+
+        if (selectedCountry !== "all") {
+            filteredData = filteredData.filter(d => d.country === selectedCountry);
+        }
+        if (selectedCategory !== "all") {
+            filteredData = filteredData.filter(d => d.category === selectedCategory);
+        }
+
+        const nodes = svg.selectAll("circle")
+            .data(filteredData, d => d.country + d.category);
+
+        nodes.exit().transition().duration(500).style("opacity", 0).remove();
+
+        nodes.enter()
+            .append("circle")
+            .attr("r", d => size(d.value))
+            .attr("fill", d => countryColorMap[d.country] || "#ccc")
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .style("fill-opacity", 0.8)
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended))
+            .merge(nodes)
+            .transition().duration(500)
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y);
+
+        simulation.nodes(filteredData).alpha(1).restart();
+    }
+
+    const simulation = d3.forceSimulation()
+        .force("center", d3.forceCenter(0, 0))
         .force("charge", d3.forceManyBody().strength(1))
-        .force("collide", d3.forceCollide().radius(d => size(d.value) + 2))
-        .on("tick", ticked);
+        .force("collide", d3.forceCollide().radius(d => size(d.value) + 5))
+        .on("tick", () => {
+            svg.selectAll("circle")
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y);
+        });
 
-    // Create circles with drag behavior
-    const node = svg.selectAll("circle")
-        .data(flatData)
-        .enter()
-        .append("circle")
-        .attr("r", d => size(d.value))
-        .attr("cx", width / 2)
-        .attr("cy", height / 2)
-        .style("fill", d => countryColorMap[d.country] || "#ccc") // Assign color using countryColorMap or fallback to default color
-        .style("fill-opacity", 0.8)
-        .attr("stroke", "black")
-        .style("stroke-width", 1)
-        .on("mouseover", mouseover)
-        .on("mousemove", mousemove)
-        .on("mouseleave", mouseleave)
-        .call(d3.drag() // Add drag behavior
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended));
-
-    // Drag functions
-    function dragstarted(event, d) {
+    const dragstarted = (event, d) => {
         if (!event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
-    }
+    };
 
-    function dragged(event, d) {
+    const dragged = (event, d) => {
         d.fx = event.x;
         d.fy = event.y;
-    }
+    };
 
-    function dragended(event, d) {
+    const dragended = (event, d) => {
         if (!event.active) simulation.alphaTarget(0);
         d.fx = null;
         d.fy = null;
-    }
+    };
 
-    // Function for ticked events in the simulation
-    function ticked() {
-        node
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y);
-    }
-
-    // Dropdown to filter countries
-    const selectCountry = d3.select("#country-select");
-    selectCountry.on("change", function() {
-        const selectedCountry = d3.select(this).property("value");
-        const selectedCategory = d3.select("#category-select").property("value");
-        updateChart(selectedCountry, selectedCategory);
-    });
-
-    // Dropdown to filter categories
-    const selectCategory = d3.select("body").append("select")
-        .attr("id", "category-select")
-        .on("change", function() {
-            const selectedCategory = d3.select(this).property("value");
-            const selectedCountry = d3.select("#country-select").property("value");
-            updateChart(selectedCountry, selectedCategory);
+    const zoom = d3.zoom()
+        .scaleExtent([0.5, 5])
+        .on("zoom", (event) => {
+            svg.attr("transform", event.transform);
         });
 
-        // Add default option for category selection
-    selectCategory.append("option")
-       .attr("value", "all")
-       .text("All Categories");
+    d3.select("svg").call(zoom);
 
-    // Populate country dropdown
+    const selectCountry = d3.select("#country-select");
     countriesData.forEach(d => {
         selectCountry.append("option")
             .attr("value", d.country)
             .text(d.country);
     });
 
-    // Populate category dropdown
+    const selectCategory = d3.select("#category-select");
     const categories = [...new Set(flatData.map(d => d.category))];
     categories.forEach(category => {
         selectCategory.append("option")
@@ -178,89 +147,32 @@ d3.csv("Design4.csv").then(data => {
             .text(category);
     });
 
-    // Function to update chart based on selected country and category
-    function updateChart(selectedCountry, selectedCategory) {
-        let filteredData = flatData;
+    selectCountry.on("change", function() {
+        const selectedCountry = d3.select(this).property("value");
+        const selectedCategory = d3.select("#category-select").property("value");
+        updateChart(selectedCountry, selectedCategory);
+    });
 
-        // Apply country filter
-        if (selectedCountry !== "all") {
-            filteredData = filteredData.filter(d => d.country === selectedCountry);
-        }
+    selectCategory.on("change", function() {
+        const selectedCountry = d3.select("#country-select").property("value");
+        const selectedCategory = d3.select(this).property("value");
+        updateChart(selectedCountry, selectedCategory);
+    });
 
-        // Apply category filter
-        if (selectedCategory !== "all") {
-            filteredData = filteredData.filter(d => d.category === selectedCategory);
-        }
+    updateChart("all", "all"); // Initial display with all countries and all categories
 
-        // Bind the filtered data to the nodes (circles)
-        const nodes = svg.selectAll("circle")
-            // Continue from the previous function
+    // Adding the legend below the dropdowns
+    const legend = d3.select("#legend");
 
-            .data(filteredData, d => d.country + d.category); // Use a key function for better binding
+    Object.keys(countryColorMap).forEach((country) => {
+        const legendItem = legend.append("div").attr("class", "legend-item");
 
-        // Remove any circles that are no longer in the data
-        nodes.exit().transition().duration(500).style("opacity", 0).remove();
+        legendItem.append("div")
+            .attr("class", "legend-color")
+            .style("background-color", countryColorMap[country]);
 
-        // Update existing circles
-        nodes.transition().duration(500)
-            .attr("r", d => size(d.value))
-            .style("fill", d => countryColorMap[d.country] || "#ccc")
-            .style("opacity", 1);
-
-        // Enter any new circles
-        nodes.enter()
-            .append("circle")
-            .attr("r", d => size(d.value))
-            .attr("cx", width / 2)
-            .attr("cy", height / 2)
-            .style("fill", d => countryColorMap[d.country] || "#ccc")
-            .style("fill-opacity", 0.8)
-            .attr("stroke", "black")
-            .style("stroke-width", 1)
-            .on("mouseover", mouseover)
-            .on("mousemove", mousemove)
-            .on("mouseleave", mouseleave)
-            .call(d3.drag() // Add drag behavior
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended))
-            .transition().duration(500)
-            .attr("cx", d => d.x) // Using x and y if simulation is needed
-            .attr("cy", d => d.y); // Adjust position with x and y if needed
-
-        // Restart the simulation with the filtered data
-        simulation.nodes(filteredData).alpha(1).restart();
-    }
-
-    // Add a legend at the top right for country colors
-    const legend = svg.append("g")
-        .attr("transform", `translate(${width - 250}, 20)`); // Adjust x-value for positioning
-
-    // Create legend items for each country
-    const legendItem = legend.selectAll(".legend-item")
-        .data(Object.keys(countryColorMap))
-        .enter()
-        .append("g")
-        .attr("class", "legend-item")
-        .attr("transform", (d, i) => `translate(0, ${i * 20})`); // Adjust spacing between legend items
-
-    // Add colored rectangles
-    legendItem.append("rect")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("width", 15)
-        .attr("height", 15)
-        .style("fill", d => countryColorMap[d] || "#ccc") // Assign colors using the map
-        .style("stroke", "black")
-        .style("stroke-width", 0.5);
-
-    // Add country labels
-    legendItem.append("text")
-        .attr("x", 25) // Adjusted spacing between rectangle and text
-        .attr("y", 12)
-        .style("font-size", "12px")
-        .style("dominant-baseline", "middle") // Align text vertically with the rectangle
-        .text(d => d);
-
+        legendItem.append("span")
+            .text(country)
+            .style("font-size", "12px");
+    });
 });
-
