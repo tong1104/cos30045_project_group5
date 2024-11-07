@@ -1,5 +1,5 @@
 // design4.js
-d3.csv("Design4.csv").then(data => {
+d3.csv("design4.csv").then(data => {
     const countriesData = data.map(d => ({
         country: d.Entity,
         categories: [
