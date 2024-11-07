@@ -8,24 +8,36 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
-
     <h1>Depression Rates in European Union Countries</h1>
 
-    <div class="slider-container">
-        <div class="slider-labels">
-            <span>2015</span>
-            <span>2016</span>
-            <span>2017</span>
-            <span>2018</span>
-            <span>2019</span>
-            <span>2020</span>
-            <span>2021</span>
+    <!-- New wrapper div for layout control -->
+    <div class="layout-container">
+        <!-- Map on the left side -->
+        <div class="map-container">
+            <div class="slider-container">
+                <div class="slider-labels">
+                    <span>2015</span><span>2016</span><span>2017</span><span>2018</span><span>2019</span><span>2020</span><span>2021</span>
+                </div>
+                <input type="range" id="year-slider" min="2015" max="2021" value="2021" step="1" />
+            </div>
+            <div id="map"></div>
+            <div id="tooltip" class="tooltip"></div>
         </div>
-        <input type="range" id="year-slider" min="2015" max="2021" value="2021" step="1" />
+
+        <!-- Content on the right side -->
+        <div class="content">
+            <h2>About Us</h2>
+            <h3>Understanding Depression Rates in the EU</h3>
+            <p>This map illustrates the depression rates across different countries in the European Union. You can view the data over multiple years to understand trends and patterns.</p>
+            <ul>
+                <li><i class="ion-android-checkmark-circle"></i> View depression rates across EU countries from 2015 to 2021.</li>
+                <li><i class="ion-android-checkmark-circle"></i> Use the slider to explore data by year.</li>
+                <li><i class="ion-android-checkmark-circle"></i> Hover over a country to see the specific rate for that year.</li>
+            </ul>
+        </div>
     </div>
-        
-    
-    <div id="tooltip" class="tooltip"></div>
+
     <script src="design1.js"></script>
 </body>
+
 </html>
