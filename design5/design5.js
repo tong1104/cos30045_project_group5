@@ -20,6 +20,25 @@ d3.csv("trend_anxiety_disease_suicide_data.csv").then(data => {
 
     const countries = Array.from(new Set(groupedData.map(d => d.Country)));
 
+    // Dropdown for rate selection
+    const rateDropdown = d3.select("body").append("select")
+        .attr("id", "rateDropdown")
+        .style("margin", "10px");
+    
+    rateDropdown.append("option").text("Anxiety Rate").attr("value", "Anxiety_Rate");
+    rateDropdown.append("option").text("Disease Rate").attr("value", "Disease_Rate");
+    rateDropdown.append("option").text("Suicide Rate").attr("value", "Suicide_Rate");
+
+    // Dropdown for country selection
+    const countryDropdown = d3.select("body").append("select")
+        .attr("id", "countryDropdown")
+        .style("margin", "10px");
+    
+    countryDropdown.append("option").text("All Countries").attr("value", "all");
+    countries.forEach(country => {
+        countryDropdown.append("option").text(country).attr("value", country);
+    });
+
     const svg = d3.select("#chart"),
           margin = {top: 40, right: 100, bottom: 50, left: 60},
           width = +svg.attr("width") - margin.left - margin.right,
@@ -51,9 +70,19 @@ d3.csv("trend_anxiety_disease_suicide_data.csv").then(data => {
         if (rateType === "Suicide_Rate") return { min: 6.95, max: 7.2, step: 0.05 };
     }
 
-    const tooltip = d3.select(".tooltip");
+    // Tooltip setup
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("background-color", "#fff")
+        .style("border", "1px solid #ccc")
+        .style("padding", "5px")
+        .style("border-radius", "3px")
+        .style("pointer-events", "none")
+        .style("font-size", "12px")
+        .style("opacity", 0);
 
-    function updateChart(rateType) {
+    function updateChart(rateType, selectedCountry = "all") {
         const yAxisSettings = getYAxisSettings(rateType);
         let y = d3.scaleLinear().domain([yAxisSettings.min, yAxisSettings.max]).range([height, 0]);
 
@@ -62,10 +91,23 @@ d3.csv("trend_anxiety_disease_suicide_data.csv").then(data => {
             .attr("class", "y-axis")
             .call(d3.axisLeft(y).ticks((yAxisSettings.max - yAxisSettings.min) / yAxisSettings.step));
 
+         chart.append("text")
+            .attr("class", "y-axis-label")
+            .attr("text-anchor", "middle")
+            .attr("transform", `rotate(-90)`)
+            .attr("x", -height / 2) // Center vertically
+            .attr("y", -margin.left + 15) // Position to the left of the Y-axis
+            .style("font-size", "11.5px")
+            .style("fill", "black")
+            .style("font-family", "Arial") // Font styling as per your preference
+            .text("Rates");
+
         chart.selectAll(".line").remove();
         chart.selectAll(".hover-point").remove();
 
-        countries.forEach(country => {
+        const countriesToShow = selectedCountry === "all" ? countries : [selectedCountry];
+
+        countriesToShow.forEach(country => {
             const countryData = groupedData.filter(d => d.Country === country).sort((a, b) => a.Year - b.Year);
             line.y(d => y(d[rateType]));
 
@@ -79,39 +121,29 @@ d3.csv("trend_anxiety_disease_suicide_data.csv").then(data => {
                 .attr("clip-path", "url(#clip)")
                 .attr("d", line);
 
-            const hoverPoint = chart.append("circle")
-                .attr("class", "hover-point")
-                .attr("r", 0.5)
-                .attr("fill", "black")
-                .style("opacity", 0);
-
+            // Mouse event for glowing effect and tooltip
             path.on("mouseover", function(event, d) {
-                    d3.selectAll(".line").attr("opacity", 0.1);
-                    d3.select(this).attr("opacity", 1).attr("stroke-width", 3.5);
+                d3.selectAll(".line").attr("opacity", 0.1);  // Dim other lines
+                d3.select(this).attr("opacity", 1).attr("stroke-width", 4); // Highlight selected line
 
-                    const year = Math.round(x.invert(event.offsetX - margin.left));
+                svg.on("mousemove", function(event) {
+                    const [mouseX] = d3.pointer(event, this);
+                    const year = Math.round(x.invert(mouseX - margin.left));
                     const closestData = countryData.find(d => d.Year === year);
-                    if (closestData) {
-                        hoverPoint
-                            .attr("cx", x(closestData.Year))
-                            .attr("cy", y(closestData[rateType]))
-                            .style("opacity", 1);
 
-                        tooltip.style("display", "block")
-                            .html(`<strong>${country}</strong><br>Year: ${year}<br>Rate: ${closestData[rateType].toFixed(2)}`)
+                    if (closestData) {
+                        tooltip.transition().style("opacity", 1);
+                        tooltip.html(`<strong>${country}</strong><br>Year: ${year}<br>Rate: ${closestData[rateType].toFixed(2)}`)
                             .style("left", (event.pageX + 10) + "px")
                             .style("top", (event.pageY - 20) + "px");
                     }
-                })
-                .on("mousemove", function(event) {
-                    tooltip.style("left", (event.pageX + 10) + "px")
-                           .style("top", (event.pageY - 20) + "px");
-                })
-                .on("mouseout", function() {
-                    d3.selectAll(".line").attr("opacity", 0.6).attr("stroke-width", 2.5);
-                    hoverPoint.style("opacity", 0);
-                    tooltip.style("display", "none");
                 });
+            })
+            .on("mouseout", function() {
+                d3.selectAll(".line").attr("opacity", 0.6).attr("stroke-width", 2.5); // Reset lines
+                tooltip.transition().style("opacity", 0); // Hide tooltip
+                svg.on("mousemove", null); // Remove the mousemove event handler on mouseout
+            });
         });
     }
 
@@ -119,14 +151,15 @@ d3.csv("trend_anxiety_disease_suicide_data.csv").then(data => {
         const transform = event.transform;
         x = transform.rescaleX(d3.scaleLinear().domain([2010, 2022]).range([0, width]));
 
-        xAxis.call(d3.axisBottom(x).ticks(10).tickFormat(d3.format("d")));
+        const tickInterval = Math.ceil(10 / transform.k);
+        xAxis.call(d3.axisBottom(x).ticks(tickInterval).tickFormat(d3.format("d")));
 
         chart.selectAll(".line").attr("d", line);
     }
 
     const zoom = d3.zoom()
-        .scaleExtent([1, 5]) 
-        .translateExtent([[0, 0], [width, height]]) 
+        .scaleExtent([1, 5])
+        .translateExtent([[0, 0], [width, height]])
         .extent([[0, 0], [width, height]])
         .on("zoom", zoomed);
 
@@ -134,8 +167,13 @@ d3.csv("trend_anxiety_disease_suicide_data.csv").then(data => {
 
     updateChart("Anxiety_Rate");
 
-    // Dropdown change event listener
-    d3.select("#rateDropdown").on("change", function() {
-        updateChart(this.value);
+    rateDropdown.on("change", function() {
+        const selectedRate = rateDropdown.node().value;
+        updateChart(selectedRate, countryDropdown.node().value);
+    });
+
+    countryDropdown.on("change", function() {
+        const selectedCountry = countryDropdown.node().value;
+        updateChart(rateDropdown.node().value, selectedCountry);
     });
 });
