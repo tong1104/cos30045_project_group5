@@ -87,7 +87,7 @@ function createChart(data, chartId, categories, title) {
 
     svg.append("text")
         .attr("x", width / 2)
-        .attr("y", height + margin.bottom / 2)
+        .attr("y", height + margin.bottom - 5)
         .attr("text-anchor", "middle")
         .text("Countries")
         .style("font-weight", "bold");
@@ -121,20 +121,37 @@ function createChart(data, chartId, categories, title) {
 }
 
 function showChart(chart) {
-    // Hide all charts and descriptions
-    document.querySelectorAll('.chart').forEach(div => div.style.display = 'none');
-    document.querySelectorAll('.desc').forEach(desc => desc.style.display = 'none');
-    
-    // Show the selected chart and description
-    document.getElementById(`${chart}Chart`).style.display = 'block';
+    // Hide all charts with a fade-out transition
+    document.querySelectorAll('.chart').forEach(div => {
+        d3.select(`#${div.id}`)
+            .transition()
+            .duration(500)
+            .style("opacity", 0)
+            .on("end", () => {
+                div.style.display = 'none';
+            });
+    });
+
+    document.querySelectorAll('.desc').forEach(desc => {
+        desc.style.display = 'none';
+    });
+
+    // Show the selected chart with a fade-in transition
+    const selectedChart = document.getElementById(`${chart}Chart`);
+    selectedChart.style.display = 'block';
+    d3.select(`#${chart}Chart`)
+        .style("opacity", 0)
+        .transition()
+        .duration(500)
+        .style("opacity", 1);
+
     document.getElementById(`${chart}Desc`).style.display = 'block';
-    
-    // Remove the 'active' class from all buttons
+
+    // Update button styles
     document.querySelectorAll('.button-container button').forEach(button => {
         button.classList.remove('active');
     });
-    
-    // Add the 'active' class to the clicked button
+
     const activeButton = document.querySelector(`button[onclick="showChart('${chart}')"]`);
     if (activeButton) {
         activeButton.classList.add('active');
