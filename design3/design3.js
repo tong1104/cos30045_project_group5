@@ -154,10 +154,14 @@ g.append("g")
     .on("mouseover", function(event, d) {
         d3.select(this).style("stroke", "black").style("opacity", 0.8); // Highlight the bar
         tooltip.transition().duration(200).style("opacity", 0.9);
-        tooltip.html(
+
+         // Format the percentage to two decimal places
+         const formattedPercentage = (d[1] - d[0]).toFixed(2);
+
+         tooltip.html(
             `<strong>Country:</strong> ${d.data["Country/area"]}<br>
              <strong>Age Group:</strong> ${d3.select(this.parentNode).datum().key}<br>
-             <strong>Percentage:</strong> ${d[1] - d[0]}%`
+             <strong>Percentage:</strong> ${formattedPercentage}%`
         )
         .style("left", (event.pageX + 10) + "px")
         .style("top", (event.pageY - 28) + "px");
