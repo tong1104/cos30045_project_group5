@@ -9,8 +9,8 @@ const svg = d3.select("#chart")
 
 const width = +svg.attr("width");
 const height = +svg.attr("height");
-const innerRadius = 180;
-const outerRadius = Math.min(width, height) / 2;
+const innerRadius = 200;
+const outerRadius = Math.min(width, height) / 2 -20;
 
 const g = svg.append("g")
     .attr("transform", `translate(${width / 2},${height / 2})`);
@@ -63,7 +63,7 @@ d3.csv("age_2021.csv").then(data => {
             .outerRadius(d => y(d[1]))
             .startAngle(d => x(d.data["Country/area"]))
             .endAngle(d => x(d.data["Country/area"]) + x.bandwidth())
-            .padAngle(0.01)
+            .padAngle(0.02)
             .padRadius(innerRadius));
 
     // Add labels
@@ -96,7 +96,7 @@ d3.csv("age_2021.csv").then(data => {
         .attr("stroke", "#000")
         .attr("r", y);
 
-    yTick.append("text")
+    /*yTick.append("text")
         .attr("y", d => -y(d))
         .attr("dy", "0.35em")
         .attr("fill", "none")
@@ -113,6 +113,7 @@ d3.csv("age_2021.csv").then(data => {
         .attr("y", d => -y(y.ticks(5).pop()))
         .attr("dy", "-1em")
         .text("Percentage");
+    */
 
     // Add legend
     const legend = g.append("g")
