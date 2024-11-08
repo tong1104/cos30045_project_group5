@@ -95,26 +95,7 @@ d3.csv("age_2021.csv").then(data => {
         .attr("fill", "none")
         .attr("stroke", "#000")
         .attr("r", y);
-
-    /*yTick.append("text")
-        .attr("y", d => -y(d))
-        .attr("dy", "0.35em")
-        .attr("fill", "none")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 5)
-        .text(y.tickFormat(5, "s"));
-
-    yTick.append("text")
-        .attr("y", d => -y(d))
-        .attr("dy", "0.35em")
-        .text(d => y.tickFormat(5, "s")(d) + "%");
-
-    yAxis.append("text")
-        .attr("y", d => -y(y.ticks(5).pop()))
-        .attr("dy", "-1em")
-        .text("Percentage");
-    */
-
+    
     // Add legend
     const legend = g.append("g")
         .selectAll("g")
