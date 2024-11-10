@@ -3,7 +3,10 @@ body {
 }
 
 h1 {
+    display: block;
+    margin-top: 20px;
     text-align: center;
+    color: #413e66;
 }
 
 .button-container {
@@ -71,8 +74,8 @@ button.active {
 }
 
 .legend-color {
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     margin-right: 5px;
 }
 
@@ -87,3 +90,4 @@ button.active {
     pointer-events: none;
     opacity: 0;
 }
+

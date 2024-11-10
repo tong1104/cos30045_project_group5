@@ -14,13 +14,13 @@ body {
 .header-container h1 {
   font-size: 28px;
   font-weight: bold;
-  color: #000;
+  color: #413e66;
 }
 
 .underline {
   width: 50px;
   height: 4px;
-  background-color: #0597eb; /* Green color for the line */
+  background-color: #0a98c0; 
   margin: 8px auto 0;
   border-radius: 2px;
 }
@@ -38,7 +38,7 @@ body {
 }
 
 .content h2 {
-  color: #413e66;
+  color: #696592;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
 }
