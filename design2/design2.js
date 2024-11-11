@@ -136,6 +136,11 @@ function showChart(chart) {
         desc.style.display = 'none';
     });
 
+    // Hide all footers to avoid duplication
+    document.querySelectorAll('.data-source').forEach(footer => {
+        footer.style.display = 'none';
+    });
+
     // Show the selected chart with a fade-in transition
     const selectedChart = document.getElementById(`${chart}Chart`);
     selectedChart.style.display = 'block';
@@ -145,7 +150,9 @@ function showChart(chart) {
         .duration(500)
         .style("opacity", 1);
 
+    // Show the description and footer for the selected chart
     document.getElementById(`${chart}Desc`).style.display = 'block';
+    document.querySelector(`#${chart}Footer`).style.display = 'block'; // Ensure the correct footer is visible
 
     // Update button styles
     document.querySelectorAll('.button-container button').forEach(button => {
