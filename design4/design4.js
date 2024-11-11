@@ -56,32 +56,35 @@ d3.csv("Design4.csv").then(data => {
     // Create the initial radar chart with Chart.js
     const ctx = document.getElementById('radarChart').getContext('2d');
     let radarChart = new Chart(ctx, {
-        type: 'radar',
-        data: {
-            labels: Object.keys(countriesData[0].categories),  // Axis labels
-            datasets: []
+    type: 'radar',
+    data: {
+        labels: Object.keys(countriesData[0].categories),  // Axis labels
+        datasets: []
+    },
+    options: {
+        responsive: true,
+        scales: {
+            r: {
+                angleLines: { display: true },
+                suggestedMin: 0,
+                suggestedMax: 100
+            }
         },
-        options: {
-            responsive: true,
-            scales: {
-                r: {
-                    angleLines: { display: true },
-                    suggestedMin: 0,
-                    suggestedMax: 100
-                }
-            },
-            plugins: {
-                legend: { position: 'top' },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return `${context.dataset.label}: ${context.raw}%`;
-                        }
+        plugins: {
+            legend: { position: 'top' },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        // Format the value to one decimal place
+                        const value = context.raw.toFixed(1);
+                        return `${context.dataset.label}: ${value}%`;
                     }
                 }
             }
         }
-    });
+    }
+});
+
 
     // Function to update radar chart based on selected country or "Select All"
     function updateRadarChart(selectedCountry) {
