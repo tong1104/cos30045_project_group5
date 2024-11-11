@@ -1,178 +1,128 @@
-// design4.js
-d3.csv("design4.csv").then(data => {
+// Load data from the CSV file using D3
+d3.csv("Design4.csv").then(data => {
+    // Convert data into the format needed for the radar chart and filter out 'N/A' values
+    data = data.filter(d => Object.values(d).every(val => val !== 'N/A'));
+
     const countriesData = data.map(d => ({
         country: d.Entity,
-        categories: [
-            { name: "Spiritual Activities", value: +d["Share - Question: mh8b - Engaged in religious/spiritual activities when anxious/depressed - Answer: Yes - Gender: all - Age group: all"] },
-            { name: "Healthy Lifestyle", value: +d["Share - Question: mh8e - Improved healthy lifestyle behaviors when anxious/depressed - Answer: Yes - Gender: all - Age group: all"] },
-            { name: "Work Changes", value: +d["Share - Question: mh8f - Made a change to work situation when anxious/depressed - Answer: Yes - Gender: all - Age group: all"] },
-            { name: "Personal Relationships", value: +d["Share - Question: mh8g - Made a change to personal relationships when anxious/depressed - Answer: Yes - Gender: all - Age group: all"] },
-            { name: "Family/Friends", value: +d["Share - Question: mh8c - Talked to friends or family when anxious/depressed - Answer: Yes - Gender: all - Age group: all"] },
-            { name: "Medication", value: +d["Share - Question: mh8d - Took prescribed medication when anxious/depressed - Answer: Yes - Gender: all - Age group: all"] },
-            { name: "Nature/Outdoors", value: +d["Share - Question: mh8h - Spent time in nature/the outdoors when anxious/depressed - Answer: Yes - Gender: all - Age group: all"] },
-            { name: "Mental Health Professional", value: +d["Share - Question: mh8a - Talked to mental health professional when anxious/depressed - Answer: Yes - Gender: all - Age group: all"] }
-        ]
+        categories: {
+            "Extremely important": +d["Extremely important"] || 0,
+            "Somewhat important": +d["Somewhat important"] || 0,
+            "Don't know/Refused": +d["Don't know/Refused"] || 0,
+            "Not too important": +d["Not too important"] || 0,
+            "Not important at all": +d["Not important at all"] || 0
+        }
     }));
 
+    // Define a color map for each country
     const countryColorMap = {
-        "Austria": "#A4C400", "Belgium": "#60A917", "Bulgaria": "#008A00", "Croatia": "#00ABA9",
-        "Cyprus": "#1BA1E2", "Czechia": "#0050EF", "Denmark": "#6A00FF", "Estonia": "#AA00FF",
-        "Finland": "#F472D0", "France": "#D80073", "Germany": "#A20025", "Greece": "#E51400",
-        "Hungary": "#FA6800", "Ireland": "#F0A30A", "Italy": "#E3C800", "Latvia": "#825A2C",
-        "Malta": "#6D8764", "Netherlands": "#647687", "Poland": "#76608A", "Portugal": "#87794E",
-        "Romania": "#FF5733", "Slovakia": "#33FF57", "Spain": "#3357FF", "Sweden": "#FF33A1"
+        "Austria": "#1f77b4",
+        "Belgium": "#ff7f0e",
+        "Bulgaria": "#2ca02c",
+        "Croatia": "#d62728",
+        "Cyprus": "#9467bd",
+        "Czechia": "#8c564b",
+        "Denmark": "#e377c2",
+        "Estonia": "#7f7f7f",
+        "Finland": "#bcbd22",
+        "France": "#17becf",
+        "Germany": "#1f77b4",
+        "Greece": "#ff7f0e",
+        "Hungary": "#2ca02c",
+        "Ireland": "#d62728",
+        "Italy": "#9467bd",
+        "Latvia": "#8c564b",
+        "Lithuania": "#e377c2",
+        "Malta": "#7f7f7f",
+        "Netherlands": "#bcbd22",
+        "Poland": "#17becf",
+        "Portugal": "#1f77b4",
+        "Romania": "#ff7f0e",
+        "Slovakia": "#2ca02c",
+        "Slovenia": "#d62728",
+        "Spain": "#9467bd",
+        "Sweden": "#8c564b"
     };
 
-    const flatData = countriesData.flatMap(country => 
-        country.categories.map(category => ({
-            country: country.country,
-            category: category.name,
-            value: category.value
-        }))
-    );
-
-    const width = 800, height = 600;
-
-    const svg = d3.select("#radarChart")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", `translate(${width / 2},${height / 2})`);
-
-    const size = d3.scaleSqrt()
-        .domain([0, d3.max(flatData, d => d.value)])
-        .range([3, 20]);
-
-    const tooltip = d3.select("body").append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip");
-
-    const mouseover = function(event, d) {
-        tooltip.style("opacity", 1);
-    };
-    const mousemove = function(event, d) {
-        tooltip.html(`<strong>Country:</strong> ${d.country}<br><strong>Category:</strong> ${d.category}<br><strong>Value:</strong> ${d.value}`)
-            .style("left", (event.pageX + 20) + "px")
-            .style("top", (event.pageY) + "px");
-    };
-    const mouseleave = function(event, d) {
-        tooltip.style("opacity", 0);
-    };
-
-    function updateChart(selectedCountry, selectedCategory) {
-        let filteredData = flatData;
-
-        if (selectedCountry !== "all") {
-            filteredData = filteredData.filter(d => d.country === selectedCountry);
-        }
-        if (selectedCategory !== "all") {
-            filteredData = filteredData.filter(d => d.category === selectedCategory);
-        }
-
-        const nodes = svg.selectAll("circle")
-            .data(filteredData, d => d.country + d.category);
-
-        nodes.exit().transition().duration(500).style("opacity", 0).remove();
-
-        nodes.enter()
-            .append("circle")
-            .attr("r", d => size(d.value))
-            .attr("fill", d => countryColorMap[d.country] || "#ccc")
-            .attr("stroke", "black")
-            .attr("stroke-width", 1)
-            .style("fill-opacity", 0.8)
-            .on("mouseover", mouseover)
-            .on("mousemove", mousemove)
-            .on("mouseleave", mouseleave)
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended))
-            .merge(nodes)
-            .transition().duration(500)
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y);
-
-        simulation.nodes(filteredData).alpha(1).restart();
-    }
-
-    const simulation = d3.forceSimulation()
-        .force("center", d3.forceCenter(0, 0))
-        .force("charge", d3.forceManyBody().strength(1))
-        .force("collide", d3.forceCollide().radius(d => size(d.value) + 5))
-        .on("tick", () => {
-            svg.selectAll("circle")
-                .attr("cx", d => d.x)
-                .attr("cy", d => d.y);
-        });
-
-    const dragstarted = (event, d) => {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-    };
-
-    const dragged = (event, d) => {
-        d.fx = event.x;
-        d.fy = event.y;
-    };
-
-    const dragended = (event, d) => {
-        if (!event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-    };
-
-    const zoom = d3.zoom()
-        .scaleExtent([0.5, 5])
-        .on("zoom", (event) => {
-            svg.attr("transform", event.transform);
-        });
-
-    d3.select("svg").call(zoom);
-
-    const selectCountry = d3.select("#country-select");
+    // Populate the dropdown menu with "Select All" option and each country
+    const select = d3.select("#country-select");
+    select.append("option").attr("value", "all").text("Select All"); // Add "Select All" option
     countriesData.forEach(d => {
-        selectCountry.append("option")
+        select.append("option")
             .attr("value", d.country)
             .text(d.country);
     });
 
-    const selectCategory = d3.select("#category-select");
-    const categories = [...new Set(flatData.map(d => d.category))];
-    categories.forEach(category => {
-        selectCategory.append("option")
-            .attr("value", category)
-            .text(category);
+    // Create the initial radar chart with Chart.js
+    const ctx = document.getElementById('radarChart').getContext('2d');
+    let radarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: Object.keys(countriesData[0].categories),  // Axis labels
+            datasets: []
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: {
+                    angleLines: { display: true },
+                    suggestedMin: 0,
+                    suggestedMax: 100
+                }
+            },
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.raw}%`;
+                        }
+                    }
+                }
+            }
+        }
     });
 
-    selectCountry.on("change", function() {
-        const selectedCountry = d3.select(this).property("value");
-        const selectedCategory = d3.select("#category-select").property("value");
-        updateChart(selectedCountry, selectedCategory);
-    });
+    // Function to update radar chart based on selected country or "Select All"
+    function updateRadarChart(selectedCountry) {
+        let datasets = [];
 
-    selectCategory.on("change", function() {
-        const selectedCountry = d3.select("#country-select").property("value");
-        const selectedCategory = d3.select(this).property("value");
-        updateChart(selectedCountry, selectedCategory);
-    });
+        // If "Select All" is chosen, include data for all countries
+        if (selectedCountry === "all") {
+            datasets = countriesData.map(datum => ({
+                label: datum.country,
+                data: Object.values(datum.categories),
+                fill: true,
+                backgroundColor: countryColorMap[datum.country] + '33',  // Adjust opacity for background
+                borderColor: countryColorMap[datum.country],
+                pointBackgroundColor: countryColorMap[datum.country]
+            }));
+        } else {
+            // Single country selection
+            const countryData = countriesData.find(d => d.country === selectedCountry);
+            if (countryData) {
+                datasets = [{
+                    label: countryData.country,
+                    data: Object.values(countryData.categories),
+                    fill: true,
+                    backgroundColor: countryColorMap[countryData.country] + '33',
+                    borderColor: countryColorMap[countryData.country],
+                    pointBackgroundColor: countryColorMap[countryData.country]
+                }];
+            }
+        }
 
-    updateChart("all", "all"); // Initial display with all countries and all categories
+        // Update the chart's datasets and re-render
+        radarChart.data.datasets = datasets;
+        radarChart.update();
+    }
 
-    // Adding the legend below the dropdowns
-    const legend = d3.select("#legend");
+    // Set default chart with all countries selected
+    updateRadarChart("all");
 
-    Object.keys(countryColorMap).forEach((country) => {
-        const legendItem = legend.append("div").attr("class", "legend-item");
-
-        legendItem.append("div")
-            .attr("class", "legend-color")
-            .style("background-color", countryColorMap[country]);
-
-        legendItem.append("span")
-            .text(country)
-            .style("font-size", "12px");
+    // Update chart when a country is selected
+    select.on("change", function() {
+        const selectedCountry = this.value;
+        updateRadarChart(selectedCountry);
     });
 });

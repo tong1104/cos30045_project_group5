@@ -3,33 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar Chart for Government Funding on Depression Research</title>
     <link rel="stylesheet" href="design4.css">
-    <title>How do people deal with anxiety or depression in EU countries? 2020</title>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
 
     <div class="content-container">
-        <h1>How do people deal with anxiety or depression in EU countries? 2020</h1>
-
+        <h1>Radar Chart for Government Funding on Depression Research</h1>
         <label for="country-select">Select Country:</label>
-        <select id="country-select">
-            <option value="all">All Countries</option>
-        </select>
-
-        <label for="category-select">Select Category:</label>
-        <select id="category-select">
-            <option value="all">All Categories</option>
-        </select>
-
-        <!-- Legend container below the dropdowns -->
-        <div class="legend-container" id="legend"></div>
-
-        <div id="radarChart"></div>
+        <select id="country-select"></select>
+        <canvas id="radarChart" width="600" height="600"></canvas>
     </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div id="tooltip" class="tooltip"></div>
-
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="design4.js"></script>
+
 </body>
 </html>
