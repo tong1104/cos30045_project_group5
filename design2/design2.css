@@ -1,5 +1,6 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f5f8fc; /* Light blue-gray background */
 }
 
 h1 {
@@ -29,13 +30,13 @@ button {
 }
 
 button:hover {
-    color: #007BFF; /* Hover color */
-    border-bottom: 2px solid #007BFF; /* Underline on hover */
+    color: #1bb1dc; /* Hover color */
+    border-bottom: 2px solid #1bb1dc; /* Underline on hover */
 }
 
 button.active {
-    color: #007BFF; /* Active color */
-    border-bottom: 2px solid #007BFF; /* Underline for the active button */
+    color: #1bb1dc; /* Active color */
+    border-bottom: 2px solid #1bb1dc; /* Underline for the active button */
 }
 
 .content-container {
