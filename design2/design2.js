@@ -11,7 +11,7 @@ Promise.all([educationData, incomeData, disabilityData]).then(([education, incom
     createChart(income, "incomeChart", ["first quintile", "second quintile", "third quintile", "fourth quintile", "fifth quintile"], "Income Levels");
     createChart(disability, "disabilityChart", ["moderate", "severe", "some or severe", "none"], "Disability Levels");
     
-    showChart('education'); // Show education chart by default
+    showChart('education');
 });
 
 function createChart(data, chartId, categories, title) {
@@ -90,7 +90,9 @@ function createChart(data, chartId, categories, title) {
         .attr("y", height + margin.bottom - 5)
         .attr("text-anchor", "middle")
         .text("Countries")
-        .style("font-weight", "bold");
+        .style("font-family", "Roboto")
+        .style("font-size", "14px")
+        .style("font-weight", "400");
 
     svg.append("text")
         .attr("transform", "rotate(-90)")
@@ -98,14 +100,18 @@ function createChart(data, chartId, categories, title) {
         .attr("x", -height / 2)
         .attr("text-anchor", "middle")
         .text("Percentage (%)")
-        .style("font-weight", "bold");
+        .style("font-family", "Roboto")
+        .style("font-size", "14px")
+        .style("font-weight", "400");
 
     svg.append("text")
         .attr("x", width / 2)
         .attr("y", -10)
         .attr("text-anchor", "middle")
         .text(title)
-        .style("font-weight", "bold");
+        .style("font-family", "Roboto")
+        .style("font-size", "14px")
+        .style("font-weight", "400");
 
     const legend = d3.select(`#${chartId}`).append("div").attr("class", "legend");
 
@@ -116,12 +122,14 @@ function createChart(data, chartId, categories, title) {
             .attr("class", "legend-color")
             .style("background-color", color(i));
         
-        legendItem.append("span").text(cat);
+        legendItem.append("span")
+            .text(cat)
+            .style("font-family", "Roboto")
+            .style("font-size", "12px");
     });
 }
 
 function showChart(chart) {
-    // Hide all charts with a fade-out transition
     document.querySelectorAll('.chart').forEach(div => {
         d3.select(`#${div.id}`)
             .transition()
@@ -136,12 +144,10 @@ function showChart(chart) {
         desc.style.display = 'none';
     });
 
-    // Hide all footers to avoid duplication
     document.querySelectorAll('.data-source').forEach(footer => {
         footer.style.display = 'none';
     });
 
-    // Show the selected chart with a fade-in transition
     const selectedChart = document.getElementById(`${chart}Chart`);
     selectedChart.style.display = 'block';
     d3.select(`#${chart}Chart`)
@@ -150,11 +156,9 @@ function showChart(chart) {
         .duration(500)
         .style("opacity", 1);
 
-    // Show the description and footer for the selected chart
     document.getElementById(`${chart}Desc`).style.display = 'block';
-    document.querySelector(`#${chart}Footer`).style.display = 'block'; // Ensure the correct footer is visible
+    document.querySelector(`#${chart}Footer`).style.display = 'block';
 
-    // Update button styles
     document.querySelectorAll('.button-container button').forEach(button => {
         button.classList.remove('active');
     });

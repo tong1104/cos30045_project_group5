@@ -1,3 +1,7 @@
+body, h1, p, button, .desc, .axis, .legend-item {
+    font-family: "Roboto", sans-serif;
+}
+
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #f5f8fc, #e0e7f5);
@@ -30,8 +34,8 @@ button {
 }
 
 button:hover {
-    color: #1bb1dc; /* Hover color */
-    border-bottom: 2px solid #1bb1dc; /* Underline on hover */
+    color: #1bb1dc;
+    border-bottom: 2px solid #1bb1dc;
 }
 
 button.active {
@@ -56,14 +60,13 @@ button.active {
 }
 
 .description {
-    width: 45%; /* Adjusted to 70% for the description area */
+    width: 45%;
     padding: 20px;
     text-align: left;
-    /* Removed the border-right to eliminate the vertical line */
 }
 
 .chart-container {
-    width: 65%; /* Adjusted to 30% for the chart and legend area */
+    width: 65%;
     padding: 20px;
     text-align: center;
 }
@@ -88,6 +91,10 @@ button.active {
     width: 10px;
     height: 10px;
     margin-right: 5px;
+}
+
+.legend-item span {
+    font-size: 12px;
 }
 
 .tooltip {
