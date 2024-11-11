@@ -44,88 +44,84 @@ d3.csv("Design4.csv").then(data => {
         "Sweden": "#8c564b"
     };
 
-    // Populate the dropdown menu with "Select All" option and each country
-    const select = d3.select("#country-select");
-    select.append("option").attr("value", "all").text("Select All"); // Add "Select All" option
+    // Populate the checkbox dropdown with options
+    const countrySelect = d3.select("#country-select");
     countriesData.forEach(d => {
-        select.append("option")
-            .attr("value", d.country)
-            .text(d.country);
+        countrySelect.append("label")
+            .html(`<input type="checkbox" class="country-checkbox" value="${d.country}"> ${d.country}`)
     });
+
+    // Select all checkboxes
+    const selectAllCheckbox = document.getElementById("select-all");
+
+    selectAllCheckbox.addEventListener("change", function() {
+        const checkboxes = document.querySelectorAll(".country-checkbox");
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+        updateRadarChart(getSelectedCountries());
+    });
+
+    // Function to get all selected countries
+    function getSelectedCountries() {
+        return Array.from(document.querySelectorAll(".country-checkbox:checked")).map(cb => cb.value);
+    }
 
     // Create the initial radar chart with Chart.js
     const ctx = document.getElementById('radarChart').getContext('2d');
     let radarChart = new Chart(ctx, {
-    type: 'radar',
-    data: {
-        labels: Object.keys(countriesData[0].categories),  // Axis labels
-        datasets: []
-    },
-    options: {
-        responsive: true,
-        scales: {
-            r: {
-                angleLines: { display: true },
-                suggestedMin: 0,
-                suggestedMax: 100
-            }
+        type: 'radar',
+        data: {
+            labels: Object.keys(countriesData[0].categories),
+            datasets: []
         },
-        plugins: {
-            legend: { position: 'top' },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        // Format the value to one decimal place
-                        const value = context.raw.toFixed(1);
-                        return `${context.dataset.label}: ${value}%`;
+        options: {
+            responsive: true,
+            scales: {
+                r: {
+                    angleLines: { display: true },
+                    suggestedMin: 0,
+                    suggestedMax: 100
+                }
+            },
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw.toFixed(1);
+                            return `${context.dataset.label}: ${value}%`;
+                        }
                     }
                 }
             }
         }
-    }
-});
+    });
 
-
-    // Function to update radar chart based on selected country or "Select All"
-    function updateRadarChart(selectedCountry) {
-        let datasets = [];
-
-        // If "Select All" is chosen, include data for all countries
-        if (selectedCountry === "all") {
-            datasets = countriesData.map(datum => ({
-                label: datum.country,
-                data: Object.values(datum.categories),
+    // Update radar chart based on selected countries
+    function updateRadarChart(selectedCountries) {
+        const datasets = selectedCountries.map(country => {
+            const countryData = countriesData.find(d => d.country === country);
+            return {
+                label: countryData.country,
+                data: Object.values(countryData.categories),
                 fill: true,
-                backgroundColor: countryColorMap[datum.country] + '33',  // Adjust opacity for background
-                borderColor: countryColorMap[datum.country],
-                pointBackgroundColor: countryColorMap[datum.country]
-            }));
-        } else {
-            // Single country selection
-            const countryData = countriesData.find(d => d.country === selectedCountry);
-            if (countryData) {
-                datasets = [{
-                    label: countryData.country,
-                    data: Object.values(countryData.categories),
-                    fill: true,
-                    backgroundColor: countryColorMap[countryData.country] + '33',
-                    borderColor: countryColorMap[countryData.country],
-                    pointBackgroundColor: countryColorMap[countryData.country]
-                }];
-            }
-        }
+                backgroundColor: countryColorMap[countryData.country] + '33',
+                borderColor: countryColorMap[countryData.country],
+                pointBackgroundColor: countryColorMap[countryData.country]
+            };
+        });
 
-        // Update the chart's datasets and re-render
         radarChart.data.datasets = datasets;
         radarChart.update();
     }
 
-    // Set default chart with all countries selected
-    updateRadarChart("all");
-
-    // Update chart when a country is selected
-    select.on("change", function() {
-        const selectedCountry = this.value;
-        updateRadarChart(selectedCountry);
+    // Event listener for individual checkboxes
+    document.querySelectorAll(".country-checkbox").forEach(checkbox => {
+        checkbox.addEventListener("change", () => {
+            updateRadarChart(getSelectedCountries());
+        });
     });
+
+    // Initialize the chart with all countries selected
+    selectAllCheckbox.checked = true;
+    updateRadarChart(countriesData.map(d => d.country));
 });

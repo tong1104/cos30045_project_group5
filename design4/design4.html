@@ -3,23 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radar Chart for Government Funding on Depression Research</title>
+    <title>Perceived Importance of Government Funding for Depression Research</title>
     <link rel="stylesheet" href="design4.css">
 </head>
 <body>
 
     <div class="content-container">
-        <h1>Perceived importance of government funding for research on depression in EU Countries, 2020</h1>
-        <label for="country-select">Select Country:</label>
-        <select id="country-select"></select>
-        <canvas id="radarChart" width="600" height="600"></canvas>
+        <h1>Perceived Importance of Government Funding for Research on Depression in EU Countries, 2020</h1>
+        
+        <div class="main-content">
+            <!-- Storytelling Section -->
+            <div class="description">
+                <strong>How Europeans View the Importance of Funding for Depression Research</strong><br><br>
+                <p>The data reveals a powerful message: the vast majority of the population believes that supporting mental health research is not only necessary but crucial.</p>
+                <p>In countries such as <strong>Croatia</strong> and <strong>Cyprus</strong>, over 70% of respondents consider funding for depression research to be <em>extremely important</em>, highlighting an urgent public demand for action. This trend is not isolated; across most of Europe, there is a clear priority placed on mental health, with <strong>Austria</strong>, <strong>Belgium</strong>, and <strong>Finland</strong> also showing high support in this category.</p>
+                <p>For some EU nations, a significant portion of the population believes in the importance of funding, but with slightly less urgency. This level of support still underscores the perceived value of mental health research.</p>
+                <p>The data paints a clear picture: European citizens are calling for government investment in depression research, with the majority viewing it as critically important. The urgency of these opinions serves as a reminder to policymakers that mental health support is a fundamental aspect of public health that deserves immediate attention.</p><br>
+            </div>
+
+            <!-- Dropdown with checkboxes -->
+            <div class="dropdown-container">
+                <div class="dropdown-btn" onclick="toggleDropdown()">Select Countries</div>
+                <div id="country-select" class="dropdown-content">
+                    <label><input type="checkbox" id="select-all"> Select All</label><br>
+                    <!-- Country checkboxes will be added dynamically here -->
+                </div>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="chart-container">
+                <canvas id="radarChart" width="600" height="600"></canvas>
+                <footer class="data-source">
+                    <p>Data Source: <a href="https://ourworldindata.org/grapher/importance-government-funding-research-anxiety-depression?country=AUT~BEL~BGR~HRV~CYP~CZE~DNK~EST~FIN~FRA~DEU~GRC~HUN~IRL~ITA~LVA~LTU~MLT~NLD~POL~PRT~ROU~SVN~SVK~ESP~SWE" target="_blank">Our World in Data</a></p>
+                    <p>Modified by: TYP</p>
+                </footer>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    
-    
-    <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="design4.js"></script>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById("country-select").classList.toggle("show");
+        }
+        
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-btn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
 
 </body>
 </html>

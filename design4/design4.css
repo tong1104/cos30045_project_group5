@@ -2,37 +2,148 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background: linear-gradient(135deg, #f5f8fc, #e0e7f5);
+    overflow-x: hidden;
+}
+
+h1 {
+    text-align: center;
+    color: #413e66;
+    margin: 20px 0;
+    font-size: 24px;
 }
 
 .content-container {
+    max-width: 1400px;
     padding: 20px;
-    max-width: 900px;
     margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-#my_dataviz {
-    margin-top: 20px;
+.main-content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    align-items: stretch; /* Ensures both containers have the same height */
+    width: 100%;
+    max-width: 1400px;
 }
 
-.tooltip {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 3px;
-    pointer-events: none;
-    font-family: Arial, sans-serif;
+/* Storytelling Section */
+.description {
+    width: 100%;
+    max-width: 700px; /* Adjusted to match chart-container for balance */
+    padding: 30px; /* Increased padding for consistency */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.description strong {
+    font-size: 18px;
+    color: #413e66;
+}
+
+.description p {
+    line-height: 1.8;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Chart Section */
+.chart-container {
+    width: 100%;
+    max-width: 700px;
+    padding: 30px; /* Increased padding to match description */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+}
+
+footer.data-source {
     font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.2s;
+    color: #555;
+    margin-top: 10px;
+    text-align: center;
 }
 
-.tooltip h4 {
-    margin: 0;
-    font-weight: bold;
+footer.data-source a {
+    color: #1bb1dc;
+    text-decoration: none;
+}
+
+footer.data-source a:hover {
+    text-decoration: underline;
+}
+
+/* Dropdown container styling */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* The dropdown button */
+.dropdown-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 200px;
+    max-height: 300px; /* Increase this value to make the dropdown longer */
+    overflow-y: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+
+/* Show the dropdown content when the user clicks on the dropdown button */
+.dropdown-content.show {
+    display: block;
+}
+
+/* Style for each option in the dropdown */
+.dropdown-content label {
+    display: block;
+    padding: 5px;
     font-size: 14px;
+    cursor: pointer;
 }
 
-.tooltip p {
-    margin: 0;
+/* Checkbox styling */
+.dropdown-content input[type="checkbox"] {
+    margin-right: 8px;
 }
+
+/* Close the dropdown if the user clicks outside */
+.show { display: block; }
