@@ -47,5 +47,24 @@
     </footer>
 
     <script src="design1.js"></script>
+    <script>
+        // JavaScript to reset the storytelling animation whenever the page is viewed
+        document.addEventListener("DOMContentLoaded", function() {
+            const storytellingElement = document.querySelector(".storytelling");
+
+            // Reset the animation function
+            function resetStorytellingAnimation() {
+                storytellingElement.classList.remove("show"); // Remove the "show" class to reset animation
+                void storytellingElement.offsetWidth; // Trigger reflow to reset animation
+                storytellingElement.classList.add("show"); // Reapply the "show" class to start animation
+            }
+
+            // When the user navigates back to the page, reset animation
+            window.addEventListener("load", resetStorytellingAnimation);
+
+            // Optionally, listen for hash changes if you're using in-page navigation
+            window.addEventListener("hashchange", resetStorytellingAnimation);
+        });
+    </script>
 </body>
 </html>
