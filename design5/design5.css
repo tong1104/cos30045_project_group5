@@ -92,10 +92,10 @@ h1 {
 .explanation-container {
     width: 35%;
     padding: 20px;
-    background-color: #ffffff; /* Match the light blue background */
-    margin-top: 40px; /* Adjusted to move the explanation down */
+    background-color: #f5f8fc; /* Match the light blue background */
+    margin-top: 5px; /* Adjusted to move the explanation down */
     margin-left: 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     color: #333;
 }
 
