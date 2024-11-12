@@ -193,3 +193,24 @@ visibility: visible;
   }
 }
 
+footer {
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px 0;
+  font-size: 12px;
+  color: #555;
+  margin-left: -550px; 
+}
+
+footer p {
+  margin: 0;
+}
+
+footer a {
+  color: #1bb1dc;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
