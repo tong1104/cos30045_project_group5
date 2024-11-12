@@ -72,7 +72,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0;
+  margin-bottom: 10;
+  margin-top: 60px;
 }
 
 .intro-container {
@@ -150,8 +151,14 @@
 --------------------------------------------------------------*/
 
 #design1 {
-  padding-top: 70px; /* Keep the current padding-top */
+  padding-top: 0px; /* Keep the current padding-top */
   padding-bottom: 80px;
   min-height: 100vh;
-  background-color: #fff;
+  background-color: #ffffff;
+}
+
+#design2 {
+  padding-top: 0px; /* Keep the current padding-top */
+  padding-bottom: 80px;
+  min-height: 100vh;
 }
