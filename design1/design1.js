@@ -160,6 +160,6 @@ function init() {
     
         console.log("Legend axis added");
     }   
+    
 }
-
 window.onload = init;

@@ -172,3 +172,24 @@ visibility: visible;
   color: #333;
   line-height: 1.8;
 }
+/* Add a fade-in animation to the storytelling section */
+.storytelling {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.8;
+  opacity: 0;  /* Initially set opacity to 0 */
+  animation: fadeIn 1s forwards;  /* Apply fadeIn animation */
+  animation-delay: 0.5s;  /* Optional: delay the animation */
+}
+
+/* Define the fadeIn animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;  /* Start with opacity 0 */
+  }
+  100% {
+    opacity: 1;  /* End with opacity 1 */
+  }
+}
+
