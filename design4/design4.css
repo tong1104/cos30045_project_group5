@@ -1,79 +1,104 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #f5f8fc, #e0e7f5);
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #f5f8fc, #e0e7f5);
-    overflow-x: hidden;
 }
 
 h1 {
     text-align: center;
     color: #413e66;
+    margin-top: 40px; /* Increased top margin for more space */
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
     margin: 20px 0;
-    font-size: 24px;
+}
+
+button {
+    padding: 12px 25px; /* Slightly increased padding for better button size */
+    font-size: 16px;
+    margin: 0 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #e0e7f5;
+    color: #333;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #00bfff;
+    color: white;
+}
+
+button.active {
+    background-color: #00bfff;
+    color: white;
 }
 
 .content-container {
-    max-width: 1400px;
-    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Changed to space-between for better spacing */
+    max-width: 1400px; /* Increased width to give more room */
     margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 40px 20px; /* Increased padding for better spacing around content */
 }
 
-.main-content {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    justify-content: center;
-    align-items: stretch;
-    width: 100%;
-    max-width: 1400px;
-}
-
-/* Storytelling Section */
 .description {
-    width: 100%;
-    max-width: 700px;
-    padding: 30px;
+    width: 45%;  /* Increased width to allow more space */
+    padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: #333;
+    font-size: 16px;
+    line-height: 1.6;
 }
 
-.description strong {
-    font-size: 18px;
-    color: #413e66;
-}
-
-.description p {
-    line-height: 1.8;
-    margin-bottom: 10px;
-    color: #555;
-}
-
-/* Chart Section */
 .chart-container {
-    width: 100%;
-    max-width: 700px;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    position: relative;
-    margin-bottom: 30px;
+    width: 50%;  /* Adjusted width for better space allocation */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px; /* Added bottom margin to create space between the chart and legend */
 }
 
-/* Data source and modification footer positioned below the chart */
+.legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px; /* Increased margin-top to push legend below the chart */
+    padding: 10px;  /* Added padding for better visual separation */
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-bottom: 10px; /* Adjusted spacing between legend items */
+}
+
+.legend-color {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    border-radius: 3px;
+}
+
 .data-source {
     font-size: 12px;
     color: #555;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 25px;
+    line-height: 1.6;
 }
+
 
 .data-source a {
     color: #1bb1dc;
@@ -83,49 +108,3 @@ h1 {
 .data-source a:hover {
     text-decoration: underline;
 }
-
-/* Dropdown container styling */
-.dropdown-container {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-btn {
-    background-color: #f1f1f1;
-    color: #333;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    min-width: 200px;
-    max-height: 300px;
-    overflow-y: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.dropdown-content.show {
-    display: block;
-}
-
-.dropdown-content label {
-    display: block;
-    padding: 5px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.dropdown-content input[type="checkbox"] {
-    margin-right: 8px;
-}
-
