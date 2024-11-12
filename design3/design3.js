@@ -1,8 +1,8 @@
 // Select the chart container and create the SVG canvas
 const svg = d3.select("#chart")
     .append("svg")
-    .attr("width", 960)
-    .attr("height", 960)
+    .attr("width", 800)
+    .attr("height", 800)
     .attr("font-family", "sans-serif")
     .attr("font-size", 10);
 
@@ -24,41 +24,11 @@ const z = d3.scaleOrdinal()
 // Load data from the CSV file
 d3.csv("age_2021.csv").then(data => {
 
-    // Filter out only "Country/area", "All ages", and "Age-standardized" for the table
-    const summaryData = data.map(d => ({
-        country: d["Country/area"],
-        allAges: d["All ages"],
-        ageStandardized: d["Age-standardized"]
-    }));
+    // Filter out any undefined or blank entries in the "Country/area" column
+    data = data.filter(d => d["Country/area"]); 
 
-    // Create a table in the summary-table-container
-    const tableContainer = d3.select("#summary-table-container");
-    const table = tableContainer.append("table");
-
-    // Append the table header
-    table.append("thead").append("tr")
-        .selectAll("th")
-        .data(["Country", "All Ages", "Age-Standardized"])
-        .enter()
-        .append("th")
-        .text(d => d);
-
-    // Append the table rows
-    const rows = table.append("tbody")
-        .selectAll("tr")
-        .data(summaryData)
-        .enter()
-        .append("tr");
-
-    // Append table cells
-    rows.selectAll("td")
-        .data(d => [d.country, d.allAges, d.ageStandardized])
-        .enter()
-        .append("td")
-        .text(d => d);
-        
     // Extract age groups, excluding "All ages" and "Age-standardized"
-    const ageGroups = Object.keys(data[0]).filter(key => key !== "Country/area" && key !== "All ages" && key !== "Age-standardized");
+    const ageGroups = Object.keys(data[0]).filter(key => key !== "Country/area" && key !== "Age-standardized");
 
     // Process data, removing '%' and converting to numbers
     data.forEach(d => {
@@ -66,7 +36,7 @@ d3.csv("age_2021.csv").then(data => {
         d.total = d3.sum(ageGroups, group => d[group]);
     });
 
-    // Set domains
+    // Set domains after filtering
     x.domain(data.map(d => d["Country/area"]));
     y.domain([0, d3.max(data, d => d.total)]);
     z.domain(ageGroups);
