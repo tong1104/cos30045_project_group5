@@ -1,5 +1,5 @@
 // Load data from the CSV file using D3
-d3.csv("Design4.csv").then(data => {
+d3.csv("design4.csv").then(data => {
 
     const columns = ["Extremely important", "Somewhat important", "Don't know/Refused", "Not too important", "Not important at all"];
 
