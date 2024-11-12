@@ -30,14 +30,12 @@
                 </div>
             </div>
 
+            <div id="tooltip" style="position: absolute; visibility: hidden; background: #f9f9f9; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"></div>
+
             <!-- Chart Section -->
             <div class="chart-container">
-                <canvas id="radarChart" width="600" height="600"></canvas>
-                <footer class="data-source">
-                    <p>Data Source: <a href="https://ourworldindata.org/grapher/importance-government-funding-research-anxiety-depression?country=AUT~BEL~BGR~HRV~CYP~CZE~DNK~EST~FIN~FRA~DEU~GRC~HUN~IRL~ITA~LVA~LTU~MLT~NLD~POL~PRT~ROU~SVN~SVK~ESP~SWE" target="_blank">Our World in Data</a></p>
-                    <p>Modified by: TYP</p>
-                </footer>
-            </div>
+                <div id="heatmap-chart"></div>
+            </div>            
         </div>
     </div>
 

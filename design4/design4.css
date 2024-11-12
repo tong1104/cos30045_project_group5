@@ -27,7 +27,7 @@ h1 {
     flex-direction: row;
     gap: 20px;
     justify-content: center;
-    align-items: stretch; /* Ensures both containers have the same height */
+    align-items: stretch;
     width: 100%;
     max-width: 1400px;
 }
@@ -35,8 +35,8 @@ h1 {
 /* Storytelling Section */
 .description {
     width: 100%;
-    max-width: 700px; /* Adjusted to match chart-container for balance */
-    padding: 30px; /* Increased padding for consistency */
+    max-width: 700px;
+    padding: 30px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -58,39 +58,29 @@ h1 {
 .chart-container {
     width: 100%;
     max-width: 700px;
-    padding: 30px; /* Increased padding to match description */
+    padding: 30px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    position: relative;
+    margin-bottom: 30px;
 }
 
-label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #333;
-}
-
-canvas {
-    width: 100% !important;
-    height: auto !important;
-    max-width: 100%;
-}
-
-footer.data-source {
+/* Data source and modification footer positioned below the chart */
+.data-source {
     font-size: 12px;
     color: #555;
-    margin-top: 10px;
     text-align: center;
+    margin-top: 10px;
 }
 
-footer.data-source a {
+.data-source a {
     color: #1bb1dc;
     text-decoration: none;
 }
 
-footer.data-source a:hover {
+.data-source a:hover {
     text-decoration: underline;
 }
 
@@ -100,7 +90,6 @@ footer.data-source a:hover {
     display: inline-block;
 }
 
-/* The dropdown button */
 .dropdown-btn {
     background-color: #f1f1f1;
     color: #333;
@@ -111,13 +100,12 @@ footer.data-source a:hover {
     border-radius: 5px;
 }
 
-/* Dropdown content (hidden by default) */
 .dropdown-content {
     display: none;
     position: absolute;
     background-color: #fff;
     min-width: 200px;
-    max-height: 300px; /* Increase this value to make the dropdown longer */
+    max-height: 300px;
     overflow-y: auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
@@ -126,13 +114,10 @@ footer.data-source a:hover {
     padding: 10px;
 }
 
-
-/* Show the dropdown content when the user clicks on the dropdown button */
 .dropdown-content.show {
     display: block;
 }
 
-/* Style for each option in the dropdown */
 .dropdown-content label {
     display: block;
     padding: 5px;
@@ -140,10 +125,7 @@ footer.data-source a:hover {
     cursor: pointer;
 }
 
-/* Checkbox styling */
 .dropdown-content input[type="checkbox"] {
     margin-right: 8px;
 }
 
-/* Close the dropdown if the user clicks outside */
-.show { display: block; }
