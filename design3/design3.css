@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif; /* Default to Roboto */
     line-height: 1.6;
     margin: 0;
     padding: 0;
@@ -58,6 +58,9 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 8px;
     margin: auto; /* Center horizontally */
+    font-family: 'Roboto', sans-serif; /* Apply Roboto font here */
+    color: #333;
+    line-height: 1.8;
 }
 
 .data-source {
@@ -67,3 +70,10 @@ h1 {
     color: #333;
 }
 
+.underline {
+    width: 50px;
+    height: 4px;
+    background-color: #1bb1dc; 
+    margin: 8px auto 0;
+    border-radius: 2px;
+  }
