@@ -145,6 +145,64 @@
   font-family: 'Roboto', sans-serif; /* Ensure Roboto is used for the heading */
 }
 
+/* Flipping text effect for each letter */
+.flip-text {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 48px; /* Match the font size from your h2 */
+  color: #1f1f1f;
+  animation: flip 4s infinite; /* Increased duration to 4 seconds */
+  animation-delay: var(--delay);
+  opacity: 0;
+}
+
+/* Animation for each letter flipping from left to right */
+@keyframes flip {
+  0% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: rotateY(180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateY(360deg);
+    opacity: 1;
+  }
+}
+
+/* Adding delay for each letter */
+.flip-text:nth-child(1) {
+  --delay: 0s;
+}
+.flip-text:nth-child(2) {
+  --delay: 0.1s;
+}
+.flip-text:nth-child(3) {
+  --delay: 0.2s;
+}
+.flip-text:nth-child(4) {
+  --delay: 0.3s;
+}
+.flip-text:nth-child(5) {
+  --delay: 0.4s;
+}
+.flip-text:nth-child(6) {
+  --delay: 0.5s;
+}
+.flip-text:nth-child(7) {
+  --delay: 0.6s;
+}
+.flip-text:nth-child(8) {
+  --delay: 0.7s;
+}
+.flip-text:nth-child(9) {
+  --delay: 0.8s;
+}
+.flip-text:nth-child(10) {
+  --delay: 0.9s;
+}
 
 /*--------------------------------------------------------------
 # Design 1 Section
