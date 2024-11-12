@@ -110,6 +110,42 @@
 }
 
 /*--------------------------------------------------------------
+# Introduction Text Styling
+--------------------------------------------------------------*/
+
+.intro-info p {
+  font-size: 18px; /* Adjusted size for readability */
+  line-height: 1.8;
+  color: #444; /* Slightly darker gray for text */
+  margin: 20px 0; /* Spacing above and below the paragraph */
+  padding: 0 15px;
+  max-width: 80%; /* Ensure the text doesn't stretch too wide */
+  text-align: center; /* Center-align the paragraph */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-info p strong {
+  font-weight: 700;
+  color: #1f1f1f; /* Make the key words stand out */
+}
+
+.intro-info p span {
+  font-weight: 600;
+  color: #007acc;
+}
+
+#intro .intro-info p {
+  margin-top: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+#intro .intro-info h2 {
+  font-family: 'Roboto', sans-serif; /* Ensure Roboto is used for the heading */
+}
+
+
+/*--------------------------------------------------------------
 # Design 1 Section
 --------------------------------------------------------------*/
 
@@ -119,4 +155,3 @@
   min-height: 100vh;
   background-color: #fff;
 }
-

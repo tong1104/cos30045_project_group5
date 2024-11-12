@@ -97,49 +97,69 @@ function init() {
     }
 
     function addLegend(svg, colorScale) {
-        const legendWidth = 200;
-        const legendHeight = 10;
-
+        const legendWidth = 10;  // Width of the legend (smaller for vertical display)
+        const legendHeight = 120;  // Height of the color band (larger for vertical display)
+        const legendMarginTop = 80;  // Position from the top
+        const legendMarginLeft = 30;  // Position from the left
+    
+        // Create a scale for the legend based on the color scale
         const legendScale = d3.scaleLinear()
-            .domain([2.7, 6.3])
-            .range([0, legendWidth]);
-
+            .domain([6.3, 2.7])  // Reverse the order: highest values at the bottom, lowest at the top
+            .range([legendHeight, 0]);  // Reverse the range for vertical axis
+    
+        // Create the legend group and position it near the black circle area
         const legend = svg.append("g")
             .attr("class", "legend")
-            .attr("transform", `translate(50, ${height + 20})`);
-
+            .attr("transform", `translate(${legendMarginLeft}, ${legendMarginTop})`);  // Adjusted position
+    
+        console.log("Legend group added");
+    
+        // Get the color range from the color scale
         const legendColors = colorScale.range();
+        console.log("Legend colors:", legendColors);
+    
+        // Bind the data for color rectangles (making them vertical)
         legend.selectAll("rect")
-            .data(legendColors)
+            .data(legendColors)  // Using the color scale range for the rectangles
             .enter().append("rect")
-            .attr("x", (d, i) => i * (legendWidth / legendColors.length))
-            .attr("y", 0)
-            .attr("width", legendWidth / legendColors.length)
-            .attr("height", legendHeight)
-            .attr("fill", d => d);
-
+            .attr("x", 0)  // Set x to 0 to stack rectangles vertically
+            .attr("y", (d, i) => i * (legendHeight / legendColors.length))  // Space out the rectangles vertically
+            .attr("width", legendWidth)  // Width of each rectangle
+            .attr("height", legendHeight / legendColors.length)  // Height of each rectangle
+            .attr("fill", d => d)  // Fill each rectangle with the respective color
+            .on("mouseover", function(event, d) {
+                d3.select(this).attr("opacity", 0.7);  // Highlight on hover
+            })
+            .on("mouseout", function() {
+                d3.select(this).attr("opacity", 1);  // Reset opacity on mouse out
+            });
+    
+        // Add a 'No Data' label with a grey rectangle at the end of the legend
         legend.append("rect")
-            .attr("x", legendWidth + 10)
-            .attr("y", 0)
-            .attr("width", 20)
-            .attr("height", legendHeight)
+            .attr("x", 0)
+            .attr("y", legendHeight)
+            .attr("width", legendWidth)
+            .attr("height", 20)  // Set a height for the 'No Data' box
             .attr("fill", "#ccc");
-
+    
         legend.append("text")
-            .attr("x", legendWidth + 35)
-            .attr("y", legendHeight / 2 + 4)
+            .attr("x", legendWidth + 5)
+            .attr("y", legendHeight + 10)
             .text("No Data")
             .attr("font-size", "12px")
             .attr("alignment-baseline", "middle");
-
-        const legendAxis = d3.axisBottom(legendScale)
+    
+        // Add the legend axis on the right side
+        const legendAxis = d3.axisRight(legendScale)
             .tickFormat(d => d + "%")
             .ticks(5);
-
+    
         legend.append("g")
-            .attr("transform", `translate(0, ${legendHeight})`)
+            .attr("transform", `translate(${legendWidth}, 0)`)  // Shift axis to the right side of the rectangles
             .call(legendAxis);
-    }
+    
+        console.log("Legend axis added");
+    }   
+    
 }
-
 window.onload = init;
