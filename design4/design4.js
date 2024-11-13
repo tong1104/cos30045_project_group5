@@ -242,3 +242,4 @@ d3.csv("design4.csv").then(data => {
     document.querySelector("#heatmap-chart").style.display = "block";
     document.querySelector("#bar-chart-container").style.display = "none";
 });
+});
