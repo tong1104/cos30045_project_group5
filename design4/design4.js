@@ -11,8 +11,17 @@ function toggleChartType() {
         document.querySelector("#heatmap-chart").style.display = "none";
         document.querySelector("#bar-chart-container").style.display = "block";
         document.querySelector(".button-container button").innerText = "View in Heatmap";
+        
+        // Clear existing bar chart to trigger animation on re-creation
+        d3.select("#bar-chart-container").select("svg").remove();
+
+        // Re-create the bar chart with transition
+        d3.csv("design4.csv").then(data => {
+            createStackedBarChart(data);
+        });
     }
 }
+
 
 // Function to create the heatmap
 function createHeatmap(data) {
@@ -88,9 +97,9 @@ function createHeatmap(data) {
 
 // Function to create the stacked bar chart
 function createStackedBarChart(data) {
-    const margin = { top: 40, right: 60, bottom: 100, left: 180 };  // Adjusted margin for more spacing
-    const width = 800 - margin.left - margin.right;  // Increased chart width
-    const height = 600 - margin.top - margin.bottom; // Increased chart height
+    const margin = { top: 40, right: 60, bottom: 100, left: 180 };
+    const width = 800 - margin.left - margin.right;
+    const height = 600 - margin.top - margin.bottom;
     const categories = ["Extremely important", "Somewhat important", "Don't know/Refused", "Not too important", "Not important at all"];
 
     const svg = d3.select("#bar-chart-container")
@@ -100,7 +109,7 @@ function createStackedBarChart(data) {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleBand().range([0, width]).padding(0.1);  // Adjusted padding for better spacing
+    const x = d3.scaleBand().range([0, width]).padding(0.1);
     const y = d3.scaleLinear().range([height, 0]);
     const color = d3.scaleOrdinal(d3.schemeCategory10).domain(categories);
 
@@ -143,7 +152,7 @@ function createStackedBarChart(data) {
         .style("font-size", "16px")
         .text("Percentage (%)");
 
-        const tooltip = d3.select("body").append("div")
+    const tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("position", "absolute")
         .style("visibility", "hidden")
@@ -158,64 +167,71 @@ function createStackedBarChart(data) {
         .enter().append("g")
         .attr("fill", (d, i) => color(categories[i]));
 
-        bar.selectAll("rect")
-    .data(d => d)
-    .enter().append("rect")
-    .attr("x", d => x(d.data.country))
-    .attr("y", d => y(d[1]))
-    .attr("height", d => y(d[0]) - y(d[1]))
-    .attr("width", x.bandwidth())
-    .on("mouseover", function(event, d) {
-        const countryData = d.data;
-        const hoveredCategory = d3.select(this.parentNode).datum().key;
+    bar.selectAll("rect")
+        .data(d => d)
+        .enter().append("rect")
+        .attr("x", d => x(d.data.country))
+        .attr("y", height)
+        .attr("height", 0)
+        .attr("width", x.bandwidth())
+        .transition()
+        .duration(800)
+        .delay((d, i) => i * 100)
+        .attr("y", d => y(d[1]))
+        .attr("height", d => y(d[0]) - y(d[1]));
 
-        let tooltipContent = `<div class="tooltip-header">${countryData.country}</div>`;
-        categories.forEach(category => {
-            const isHovered = category === hoveredCategory;
-            const boldClass = isHovered ? 'bold' : '';
-            const percentage = countryData[category].toFixed(1) + '%';
+    bar.selectAll("rect")
+        .on("mouseover", function(event, d) {
+            const countryData = d.data;
+            const hoveredCategory = d3.select(this.parentNode).datum().key;
 
-            tooltipContent += `
-                <div class="tooltip-row">
-                    <span class="tooltip-color-box" style="background-color: ${color(category)};"></span>
-                    <span class="tooltip-category ${boldClass}">${category}</span>
-                    <span class="tooltip-percentage ${boldClass}">${percentage}</span>
-                </div>`;
+            let tooltipContent = `<div class="tooltip-header">${countryData.country}</div>`;
+            categories.forEach(category => {
+                const isHovered = category === hoveredCategory;
+                const boldClass = isHovered ? 'bold' : '';
+                const percentage = countryData[category].toFixed(1) + '%';
+
+                tooltipContent += `
+                    <div class="tooltip-row">
+                        <span class="tooltip-color-box" style="background-color: ${color(category)};"></span>
+                        <span class="tooltip-category ${boldClass}">${category}</span>
+                        <span class="tooltip-percentage ${boldClass}">${percentage}</span>
+                    </div>`;
+            });
+
+            tooltip.html(tooltipContent)
+                .style("visibility", "visible");
+        })
+        .on("mousemove", function(event) {
+            tooltip.style("top", (event.pageY + 10) + "px")
+                .style("left", (event.pageX + 10) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.style("visibility", "hidden");
         });
 
-        tooltip.html(tooltipContent)
-            .style("visibility", "visible");
-    })
-    .on("mousemove", function(event) {
-        tooltip.style("top", (event.pageY + 10) + "px")
-            .style("left", (event.pageX + 10) + "px");
-    })
-    .on("mouseout", function() {
-        tooltip.style("visibility", "hidden");
-    });
-
-
-        // Add legend for stacked bar chart at the bottom
+    // Add legend for stacked bar chart at the bottom
     const legend = svg.append("g")
-    .attr("transform", `translate(0, ${height + 85})`);  // Position below the chart
+        .attr("transform", `translate(0, ${height + 85})`);
 
-categories.forEach((cat, i) => {
-    const legendRow = legend.append("g")
-        .attr("transform", `translate(${i * 110}, 0)`); // Adjust horizontal spacing
+    categories.forEach((cat, i) => {
+        const legendRow = legend.append("g")
+            .attr("transform", `translate(${i * 110}, 0)`);
 
-    legendRow.append("rect")
-        .attr("width", 15)
-        .attr("height", 15)
-        .attr("fill", color(cat));
+        legendRow.append("rect")
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill", color(cat));
 
-    legendRow.append("text")
-        .attr("x", 20)
-        .attr("y", 12)
-        .text(cat)
-        .style("font-size", "9px")
-        .style("alignment-baseline", "middle");
-});
+        legendRow.append("text")
+            .attr("x", 20)
+            .attr("y", 12)
+            .text(cat)
+            .style("font-size", "9px")
+            .style("alignment-baseline", "middle");
+    });
 }
+
 
 // Load data from CSV and initialize both charts
 d3.csv("design4.csv").then(data => {
