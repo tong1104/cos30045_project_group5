@@ -7,7 +7,7 @@ html, body {
 
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #f5f8fc, #e0e7f5);
+    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -92,7 +92,7 @@ h1 {
 .explanation-container {
     width: 35%;
     padding: 20px;
-    background-color: #f5f8fc; /* Match the light blue background */
+    background-color: rgba(204, 228, 236, 0.9); /* Match the light blue background */
     margin-bottom: 120px; /* Adjusted to move the explanation down */
     margin-left: 20px;
     border-radius: 12px;
