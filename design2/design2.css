@@ -1,11 +1,14 @@
-/* Prevent horizontal and vertical overflow */
-html, body {
-    overflow-x: hidden;
-    overflow-y: auto;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #f5f8fc, #e0e7f5);
