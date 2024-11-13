@@ -108,3 +108,62 @@ button.active {
 .data-source a:hover {
     text-decoration: underline;
 }
+
+/* Tooltip container style */
+.tooltip {
+    position: absolute;
+    visibility: hidden;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: #333;
+    z-index: 1000;
+}
+
+/* Tooltip header (country name) */
+.tooltip-header {
+    background-color: #f4f4f4;
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Tooltip row for each category */
+.tooltip-row {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+    white-space: nowrap; /* Prevents word wrapping */
+}
+
+/* Color box in tooltip */
+.tooltip-color-box {
+    width: 10px;
+    height: 10px;
+    margin-right: 6px;
+    border-radius: 2px;
+}
+
+/* Category name with space for percentage alignment */
+.tooltip-category {
+    flex: 1;
+    color: #666;
+    padding-right: 10px; /* Add space between category text and percentage */
+}
+
+/* Style for hovered category */
+.tooltip-category.bold {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Percentage value aligned to the right */
+.tooltip-percentage {
+    text-align: right;
+    width: 50px; /* Ensures all percentages align vertically */
+}
+

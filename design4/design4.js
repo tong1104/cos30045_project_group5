@@ -52,33 +52,38 @@ function createHeatmap(data) {
     svg.append("g")
         .call(d3.axisLeft(yScale).tickSize(0));
 
-    const tooltip = d3.select("body").append("div")
+        const tooltip = d3.select("body").append("div")
         .attr("id", "tooltip")
         .style("position", "absolute")
-        .style("visibility", "hidden");
+        .style("visibility", "hidden")
+        .style("background-color", "rgba(0, 0, 0, 0.7)")  // Set a semi-transparent dark background
+        .style("color", "white")                         // Set text color to white for contrast
+        .style("padding", "8px")                         // Add padding for readability
+        .style("border-radius", "4px");                  // Add rounded corners
+    
 
-    data.forEach(d => {
-        columns.forEach(col => {
-            const value = parseFloat(d[col]) || "N/A";
-            svg.append("rect")
-                .attr("x", xScale(col))
-                .attr("y", yScale(d.Entity))
-                .attr("width", xScale.bandwidth())
-                .attr("height", yScale.bandwidth())
-                .attr("fill", value === "N/A" ? "#D3D3D3" : colorScale(value))
-                .on("mouseover", function(event) {
-                    tooltip.html(`<strong>${d.Entity}</strong><br>${col}: <strong>${value}</strong>`)
-                    .style("visibility", "visible");
-                })
-                .on("mousemove", function(event) {
-                    tooltip.style("top", (event.pageY + 10) + "px")
-                        .style("left", (event.pageX + 10) + "px");
-                })
-                .on("mouseout", function() {
-                    tooltip.style("visibility", "hidden");
-                });
+        data.forEach(d => {
+            columns.forEach(col => {
+                const value = parseFloat(d[col]) || "N/A";
+                svg.append("rect")
+                    .attr("x", xScale(col))
+                    .attr("y", yScale(d.Entity))
+                    .attr("width", xScale.bandwidth())
+                    .attr("height", yScale.bandwidth())
+                    .attr("fill", value === "N/A" ? "#D3D3D3" : colorScale(value))
+                    .on("mouseover", function(event) {
+                        tooltip.html(`<strong>${d.Entity}</strong><br>${col}: <strong>${value !== "N/A" ? value.toFixed(1) + "%" : value}</strong>`)
+                        .style("visibility", "visible");
+                    })
+                    .on("mousemove", function(event) {
+                        tooltip.style("top", (event.pageY + 10) + "px")
+                            .style("left", (event.pageX + 10) + "px");
+                    })
+                    .on("mouseout", function() {
+                        tooltip.style("visibility", "hidden");
+                    });
+            });
         });
-    });
 }
 
 // Function to create the stacked bar chart
@@ -121,55 +126,95 @@ function createStackedBarChart(data) {
     svg.append("g")
         .call(d3.axisLeft(y).ticks(10));
 
-    const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+    // X-axis label
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom - 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .text("Country");
+
+    // Y-axis label
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -margin.left + 135)
+        .attr("x", -height / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .text("Percentage (%)");
+
+        const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("visibility", "hidden")
+        .style("background-color", "#f4f4f4")
+        .style("color", "#333")
+        .style("padding", "10px")
+        .style("border-radius", "4px")
+        .style("box-shadow", "0px 0px 10px rgba(0, 0, 0, 0.1)");
 
     const bar = svg.selectAll(".country")
         .data(stackedData)
         .enter().append("g")
         .attr("fill", (d, i) => color(categories[i]));
 
-    bar.selectAll("rect")
-        .data(d => d)
-        .enter().append("rect")
-        .attr("x", d => x(d.data.country))
-        .attr("y", d => y(d[1]))
-        .attr("height", d => y(d[0]) - y(d[1]))
-        .attr("width", x.bandwidth())
-        .on("mouseover", function(event, d) {
-            tooltip.html(`${d.data.country}<br>${d3.select(this.parentNode).datum().key}: ${d[1] - d[0]}%`)
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 25) + "px")
-                .style("display", "block");
-        })
-        .on("mousemove", function(event) {
-            tooltip.style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 25) + "px");
-        })
-        .on("mouseout", function() {
-            tooltip.style("display", "none");
+        bar.selectAll("rect")
+    .data(d => d)
+    .enter().append("rect")
+    .attr("x", d => x(d.data.country))
+    .attr("y", d => y(d[1]))
+    .attr("height", d => y(d[0]) - y(d[1]))
+    .attr("width", x.bandwidth())
+    .on("mouseover", function(event, d) {
+        const countryData = d.data;
+        const hoveredCategory = d3.select(this.parentNode).datum().key;
+
+        let tooltipContent = `<div class="tooltip-header">${countryData.country}</div>`;
+        categories.forEach(category => {
+            const isHovered = category === hoveredCategory;
+            const boldClass = isHovered ? 'bold' : '';
+            const percentage = countryData[category].toFixed(1) + '%';
+
+            tooltipContent += `
+                <div class="tooltip-row">
+                    <span class="tooltip-color-box" style="background-color: ${color(category)};"></span>
+                    <span class="tooltip-category ${boldClass}">${category}</span>
+                    <span class="tooltip-percentage ${boldClass}">${percentage}</span>
+                </div>`;
         });
 
-   // Add legend for stacked bar chart at the bottom
-const legend = svg.append("g")
-.attr("transform", `translate(0, ${height + margin.bottom + 30})`); // Move legend below the chart
+        tooltip.html(tooltipContent)
+            .style("visibility", "visible");
+    })
+    .on("mousemove", function(event) {
+        tooltip.style("top", (event.pageY + 10) + "px")
+            .style("left", (event.pageX + 10) + "px");
+    })
+    .on("mouseout", function() {
+        tooltip.style("visibility", "hidden");
+    });
+
+
+        // Add legend for stacked bar chart at the bottom
+    const legend = svg.append("g")
+    .attr("transform", `translate(0, ${height + 85})`);  // Position below the chart
 
 categories.forEach((cat, i) => {
-const legendRow = legend.append("g")
-    .attr("transform", `translate(${i * 110}, 0)`); // Space items horizontally (adjust '110' for more spacing)
+    const legendRow = legend.append("g")
+        .attr("transform", `translate(${i * 110}, 0)`); // Adjust horizontal spacing
 
-legendRow.append("rect")
-    .attr("width", 15)  // Adjust size of the color box
-    .attr("height", 15)
-    .attr("fill", color(cat));
+    legendRow.append("rect")
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("fill", color(cat));
 
-legendRow.append("text")
-    .attr("x", 18)  // Adjust the text spacing from the color box
-    .attr("y", 13)  // Align text vertically with color box
-    .text(cat)
-    .style("font-size", "14px")
-    .style("alignment-baseline", "middle");
+    legendRow.append("text")
+        .attr("x", 20)
+        .attr("y", 12)
+        .text(cat)
+        .style("font-size", "9px")
+        .style("alignment-baseline", "middle");
 });
-
 }
 
 // Load data from CSV and initialize both charts
