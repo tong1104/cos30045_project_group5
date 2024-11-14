@@ -3,14 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Depressive Disorders Prevalence in EU Countries by Age, 2021</title>
+    <title>Depressive Disorders Prevalence in EU Countries by Age</title>
     <link rel="stylesheet" href="design3.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Depressive Disorders Prevalence in EU Countries by Age, 2021</h1>
+    <h1>Depressive Disorders Prevalence in EU Countries by Age (2015-2021)</h1>
     <div class="underline"></div>
-    
+
+    <!-- Year Selection Dropdown -->
+    <div style="text-align: left; margin-left: 50px;">
+        <label for="yearSelect">Select Year:</label>
+        <select id="yearSelect">
+            <option value="age_2015.csv"selected>2015</option>
+            <option value="age_2016.csv">2016</option>
+            <option value="age_2017.csv">2017</option>
+            <option value="age_2018.csv">2018</option>
+            <option value="age_2019.csv">2019</option>
+            <option value="age_2020.csv">2020</option>
+            <option value="age_2021.csv">2021</option>
+        </select>
+    </div>
+
     <div class="content-container">
         <!-- Chart Container on the Left -->
         <div id="chart"></div>
@@ -32,4 +46,5 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="design3.js"></script>
 </body>
+
 </html>

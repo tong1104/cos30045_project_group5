@@ -39,7 +39,7 @@ h1 {
     max-width: 150px;
     padding: 8px;
     font-size: 12px;
-    background-color: rgba(173, 216, 230, 0.9);
+    background-color: rgba(173, 216, 230, 1);
     border: 1px solid #ccc;
     border-radius: 5px;
     pointer-events: none;
