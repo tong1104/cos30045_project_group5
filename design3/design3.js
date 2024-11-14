@@ -28,7 +28,7 @@ d3.csv("age_2021.csv").then(data => {
     data = data.filter(d => d["Country/area"]); 
 
     // Extract age groups, excluding "All ages" and "Age-standardized"
-    const ageGroups = Object.keys(data[0]).filter(key => key !== "Country/area" && key !== "Age-standardized");
+    const ageGroups = Object.keys(data[0]).filter(key => key !== "Country/area" &&key !== "All ages");
 
     // Process data, removing '%' and converting to numbers
     data.forEach(d => {
