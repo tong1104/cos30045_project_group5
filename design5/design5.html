@@ -3,86 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Depression Impact Visualization</title>
+    <title>Depressive Disorders Prevalence in EU Countries by Gender</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <link rel="stylesheet" href="design5.css">
 </head>
 <body>
     <div class="title-container">
-        <h1>The Impact Trends of Depression on European Society</h1>
+        <h1>Depressive Disorders Prevalence in EU Countries by Gender, 2021</h1>
     </div>
     
     <div class="container">
         <div class="chart-section">
-            <div class="button-container">
-                <button id="anxietyButton" class="rate-button active" data-rate="Anxiety_Rate" onclick="showExplanation('Anxiety_Rate')">Anxiety Rate</button>
-                <button id="diseaseButton" class="rate-button" data-rate="Disease_Rate" onclick="showExplanation('Disease_Rate')">Disease Rate</button>
-                <button id="suicideButton" class="rate-button" data-rate="Suicide_Rate" onclick="showExplanation('Suicide_Rate')">Suicide Rate</button>
-                <select id="countryDropdown" class="dropdown">
-                    <option value="all">All Countries</option>
-                </select>
-            </div>
-            <div class="chart-container">
-                <svg id="chart" width="800" height="500"></svg>
-            </div>
+            <svg id="chart" width="800" height="500"></svg>
         </div>
-
         <div class="explanation-container">
-            <p id="anxietyExplanation" class="explanation-text" style="display: block;">
-                <strong>How Anxiety Clouds Over Europe’s Mental Health</strong><br>
-                <br>
-                This chart tracks the prevalence of anxiety across various European countries. By examining this data, we see that 
-                countries like Germany and Spain exhibit increasing anxiety rates, potentially due to economic uncertainty, rising 
-                cost of living, or social challenges. These nations may be facing high levels of stress from factors such as employment 
-                instability, housing costs, and societal pressures.
-                <br><br>
-                On the other hand, some countries show a stable trend, suggesting the presence of effective mental health resources, social 
-                support networks, or cultural resilience factors that help mitigate anxiety.
+            <h2><strong> Gendered Lens on Mental Health in the EU</strong></h2>
+            <p>
+                Depression affects millions across Europe, but the stark gender divide in mental health 
+                statistics is both revealing and concerning. Countries like Greece, with one of the highest gender gaps 
+                in depressive disorders, highlight how societal roles and expectations may contribute to this divide.
                 <br><br> 
-                Analyzing these variations helps policymakers and 
-                mental health professionals identify which countries may benefit from targeted mental health interventions.
-                <br><br> 
-                It also highlights the importance of cross-country learning, where nations with higher anxiety rates can look to 
-                more stable countries for successful strategies in managing public mental health.
+                Women, 
+                who consistently report higher rates of depression, often face unique stressors such as balancing professional 
+                and familial responsibilities, alongside navigating cultural pressures. 
+                
             </p>
-            <p id="diseaseExplanation" class="explanation-text">
-                <strong>Disease Rate Signals Health Challenges Across Europe</strong><br>
-                <br>
-                This chart reflects the general physical health and burden of disease among European countries. Countries like Portugal and Italy 
-                have higher disease rates, which might suggest gaps in healthcare access, lifestyle-related health risks, or environmental factors 
-                affecting public health. 
-                <br><br>
-                These higher rates could indicate challenges such as limited healthcare infrastructure, lower rates of preventive 
-                care, or a prevalence of chronic lifestyle-related illnesses (e.g., cardiovascular diseases, diabetes) in these regions.
-                <br><br>
-                In contrast, countries with more stable or lower disease rates may benefit from stronger preventive care systems, healthier lifestyle 
-                practices, or more accessible healthcare services. For policymakers, this data highlights the importance of addressing specific health 
-                trends and tailoring policies to local needs. 
-                <br><br>
-                By focusing on regions with higher disease rates, health agencies can allocate resources 
-                to improve healthcare access, promote healthier lifestyles, and enhance disease prevention efforts.
+            <p>
+                This data underscores the critical need for gender-specific mental health initiatives. Tailored interventions that 
+                address the specific challenges faced by women and men can foster greater inclusivity and effectiveness in treatment.
+                <br><br> 
+                Acknowledging and understanding these gendered patterns is a vital step toward creating a more empathetic and supportive 
+                mental health framework across Europe.
             </p>
-            <p id="suicideExplanation" class="explanation-text">
-                <strong>The Heavy Toll of Suicide in Europe</strong><br>
-                <br>
-                This chart on suicide rates presents a deeply concerning aspect of mental health across Europe. Countries with higher suicide rates, such 
-                as Lithuania and Hungary, reflect significant mental health challenges and may indicate a lack of sufficient mental health support or social 
-                stigma that prevents individuals from seeking help.
-                <br><br> 
-                These countries could be experiencing societal pressures, economic hardships, or cultural 
-                factors that contribute to mental distress, making suicide prevention a vital area of focus.
-                <br><br>
-                Some countries have managed to stabilize or even reduce suicide rates, pointing to effective mental health policies, strong community support systems, 
-                or accessible counseling services.
-                <br><br> 
-                Understanding these trends allows Europe to identify the most affected regions and prioritize suicide prevention programs 
-                in these areas. 
         </div>
     </div>
+    
 
     <!-- Footer Section for the Chart -->
     <div class="footer">
-        <p>Data Source: <a href="https://ec.europa.eu/eurostat/databrowser/view/hlth_ehis_cd1e$defaultview/default/table" target="_blank">Eurostat</a> | Modified by: WYF</p>
+        <p>Data Source: <a href="https://ourworldindata.org/grapher/depressive-disorders-prevalence-males-vs-females?time=2015" target="_blank">Our World in Data</a> | Modified by: WYF</p>
     </div>
     <script src="design5.js"></script>
+</body>
 </html>
