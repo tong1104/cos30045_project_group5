@@ -9,40 +9,46 @@
 </head>
 <body>
     <div class="title-container">
-        <h1>Depressive Disorders Prevalence in EU Countries by Gender, 2021</h1>
+        <h1>Depressive Disorders Prevalence in EU Countries by Gender (2019-2021)</h1>
     </div>
-    
+
+    <!-- Buttons for selecting year -->
+    <div class="button-container">
+        <button class="button active" id="button-2019">2019</button>
+        <button class="button" id="button-2020">2020</button>
+        <button class="button" id="button-2021">2021</button>
+    </div>
+
+    <!-- Chart and explanation sections -->
     <div class="container">
         <div class="chart-section">
             <svg id="chart" width="800" height="500"></svg>
         </div>
-        <div class="explanation-container">
-            <h2><strong> Gendered Lens on Mental Health in the EU</strong></h2>
+        <div class="explanation-section">
+            <h2><strong>Gendered Lens on Mental Health in the EU</strong></h2>
             <p>
-                Depression affects millions across Europe, but the stark gender divide in mental health 
-                statistics is both revealing and concerning. Countries like Greece, with one of the highest gender gaps 
-                in depressive disorders, highlight how societal roles and expectations may contribute to this divide.
+                Depressive disorders across the European Union show a striking gender gap, with women consistently reporting higher rates of depression than men.
                 <br><br> 
-                Women, 
-                who consistently report higher rates of depression, often face unique stressors such as balancing professional 
-                and familial responsibilities, alongside navigating cultural pressures. 
-                
-            </p>
-            <p>
-                This data underscores the critical need for gender-specific mental health initiatives. Tailored interventions that 
-                address the specific challenges faced by women and men can foster greater inclusivity and effectiveness in treatment.
+                This trend is evident in the data for 2019, 2020, and 2021, where the prevalence of depression among females (represented by the red bars) is consistently higher 
+                than that of males (represented by the blue bars) across most countries.
+                <br><br>
+                Countries like Greece display an especially large gender gap in depression rates, suggesting that societal expectations and gender roles may play a significant role in 
+                exacerbating mental health issues for women. 
+                <br><br> 
+                These findings highlight the need for gender-sensitive mental health interventions that recognize the unique challenges women face, 
+                such as balancing family and work life, cultural pressures, and emotional labor, which all contribute to the higher depression rates observed across many EU nations.
                 <br><br> 
                 Acknowledging and understanding these gendered patterns is a vital step toward creating a more empathetic and supportive 
                 mental health framework across Europe.
             </p>
         </div>
     </div>
-    
 
     <!-- Footer Section for the Chart -->
     <div class="footer">
         <p>Data Source: <a href="https://ourworldindata.org/grapher/depressive-disorders-prevalence-males-vs-females?time=2015" target="_blank">Our World in Data</a> | Modified by: WYF</p>
     </div>
+
     <script src="design5.js"></script>
 </body>
 </html>
