@@ -57,10 +57,10 @@ d3.csv("design5_2021.csv").then(function (data) {
         .attr('x', function (d) { return x(0); }) // Start at center
         .attr('width', function (d) { return Math.abs(x(0) - x(d.female)); }) // Extend right for females
         .attr('height', y.bandwidth())
-        .attr('fill', '#68a0cf') // Default blue color for females
+        .attr('fill', '#F97B72') // Default blue color for females
         .on('mouseover', function (event, d) {
             d3.select(this)
-                .style('stroke', '#356f99') // Dark blue stroke
+                .style('stroke', '#992E1C') 
                 .style('stroke-width', '2px');
 
             tooltip.style('display', 'block')
@@ -83,10 +83,10 @@ d3.csv("design5_2021.csv").then(function (data) {
         .attr('x', function (d) { return x(-d.male); }) // Extend left for males
         .attr('width', function (d) { return Math.abs(x(0) - x(-d.male)); })
         .attr('height', y.bandwidth())
-        .attr('fill', '#f78c6c') 
+        .attr('fill', '#72B5F9') 
         .on('mouseover', function (event, d) {
             d3.select(this)
-                .style('stroke', '#c75d44')  
+                .style('stroke', '#003A70')  
                 .style('stroke-width', '2px');
 
             tooltip.style('display', 'block')
@@ -145,7 +145,7 @@ chart.append('g')
 .attr('y', +2)
 .attr('width', 15)
 .attr('height', 15)
-.attr('fill', '#f78c6c'); // Male bar color
+.attr('fill', '#72B5F9'); // Male bar color
 
 chart.append('text')
 .attr('class', 'axis-label')
@@ -163,7 +163,7 @@ chart.append('g')
 .attr('y', +2)
 .attr('width', 15)
 .attr('height', 15)
-.attr('fill', '#68a0cf'); // Female bar color
+.attr('fill', '#F97B72'); // Female bar color
 
 chart.append('text')
 .attr('class', 'axis-label')
